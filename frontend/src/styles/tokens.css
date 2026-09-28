@@ -1,0 +1,28 @@
+:root {
+  --color-ink: #1b2430;
+  --color-ink-muted: #4a5563;
+  --color-navy: #1e3552;
+  --color-navy-deep: #15263c;
+  --color-forest: #2c4a3d;
+  --color-cream: #f4efe4;
+  --color-paper: #fffdf8;
+  --color-line: #d7cfc0;
+  --color-accent: #8a5a24;
+  --color-focus: #1e4d8c;
+  --color-error: #8a2b2b;
+  --color-error-bg: #f8ecec;
+  --color-info-bg: #eef3ea;
+  --shadow-soft: 0 1px 0 rgba(27, 36, 48, 0.06);
+  --font-serif: "Source Serif 4", "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --measure: 40rem;
+  --wide: 64rem;
+  --radius: 2px;
+}

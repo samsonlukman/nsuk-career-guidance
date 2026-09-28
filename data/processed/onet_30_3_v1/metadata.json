@@ -1,0 +1,531 @@
+{
+  "feature_version": "onet_30_3_v1",
+  "onet_release": "30.3",
+  "onet_release_month": "May 2026",
+  "created_at": "2026-08-20T21:36:15+00:00",
+  "source_files": [
+    {
+      "name": "Read Me.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Read Me.txt",
+      "bytes": 506,
+      "sha256": "9ea0df5cc8fe0b6c4bd5c257db455e8dba8e09637578f25da64aaa16c6ebf417"
+    },
+    {
+      "name": "Occupation Data.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Occupation Data.txt",
+      "bytes": 265794,
+      "sha256": "63e6029d3d30ff5c7cf39b5304a733b77a409e01c65ae7095fe92f6d18d74a66"
+    },
+    {
+      "name": "Scales Reference.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Scales Reference.txt",
+      "bytes": 950,
+      "sha256": "a4c2f725b0c954882398789bb90c752d2c752d335fc526390ab61ca730a13087"
+    },
+    {
+      "name": "Career Interest Types.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Career Interest Types.txt",
+      "bytes": 629058,
+      "sha256": "6d9a78bc145c7813e1f59a4fc9e30008f806d416673f9bea132b204c7c79939a"
+    },
+    {
+      "name": "Specific Interest Areas.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Specific Interest Areas.txt",
+      "bytes": 4563781,
+      "sha256": "4cc0852004d4cb52e8e118a327c53d20b6a8af96455614f1c0634bc789fef6c6"
+    },
+    {
+      "name": "Knowledge.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Knowledge.txt",
+      "bytes": 5605166,
+      "sha256": "d9601dd763d5b3b203dd8827a3c2bd6c1b3d6155c1674168f0ef30b0e005cf07"
+    },
+    {
+      "name": "Essential Skills.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Essential Skills.txt",
+      "bytes": 1539626,
+      "sha256": "cb387171afbc976b40790aa79946d0ba7eeb667d7fbd5d7610b3e4da288506d4"
+    },
+    {
+      "name": "Transferable Skills.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Transferable Skills.txt",
+      "bytes": 4105406,
+      "sha256": "c38338e9130b3374af597ececbb73f639088263e60f0bedde18a5b5e64f85f2c"
+    },
+    {
+      "name": "Work Styles.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Work Styles.txt",
+      "bytes": 2279557,
+      "sha256": "c6ce3c72bf0e4849b807b31cb263b832b25cca78b529c003f68271e6ba9d10ac"
+    },
+    {
+      "name": "Work Activities.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Work Activities.txt",
+      "bytes": 8749064,
+      "sha256": "c360f09974150f9e6553795c7f739178320967b56b6488a063f14068d4d8522e"
+    },
+    {
+      "name": "Job Zones.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Job Zones.txt",
+      "bytes": 28028,
+      "sha256": "5f0b6b0fb560fff80657afa8e07b104bc8433a7629a7565d345d9bcdb24df7c3"
+    },
+    {
+      "name": "Job Zone Reference.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Job Zone Reference.txt",
+      "bytes": 3660,
+      "sha256": "c2b8d5e13d4fc681518197175e9274946bf5653895e388ee38c1803295f39ff5"
+    },
+    {
+      "name": "Education.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Education.txt",
+      "bytes": 1108076,
+      "sha256": "551b94176070b4c29e4383e9b5937071c50e59d44118ff983db569e766a74954"
+    },
+    {
+      "name": "Education Categories.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Education Categories.txt",
+      "bytes": 1823,
+      "sha256": "f42674e759eab75034df808901525f8ba81519853e398002c828bf5f3443348d"
+    },
+    {
+      "name": "Work Context.txt",
+      "path": "/Users/apple/finalproject/data/raw/db_30_3_text/Work Context.txt",
+      "bytes": 36782933,
+      "sha256": "d52948bc8457192a56fbf40f96168dcbfcbb3a7bdd1c22b097ab02e833dea190"
+    }
+  ],
+  "counts": {
+    "occupation_data": 1016,
+    "knn_complete": 862,
+    "recommendable_zones_3_5": 544,
+    "knn_complete_zone_2": 318,
+    "knn_complete_zone_3": 196,
+    "knn_complete_zone_4": 202,
+    "knn_complete_zone_5": 146,
+    "knn_complete_with_education": 846,
+    "knn_complete_with_work_context": 862,
+    "occupation_feature_rows": 136866
+  },
+  "default_job_zones": [
+    3,
+    4,
+    5
+  ],
+  "block_weights": {
+    "riasec": 0.25,
+    "sia": 0.2,
+    "essential_skills": 0.2,
+    "transferable_skills": 0.15,
+    "work_styles": 0.1,
+    "knowledge": 0.1
+  },
+  "scales": {
+    "CX": {
+      "minimum": 1.0,
+      "maximum": 5.0
+    },
+    "IM": {
+      "minimum": 1.0,
+      "maximum": 5.0
+    },
+    "OI": {
+      "minimum": 1.0,
+      "maximum": 7.0
+    },
+    "RL": {
+      "minimum": 0.0,
+      "maximum": 100.0
+    },
+    "WI": {
+      "minimum": -3.0,
+      "maximum": 3.0
+    }
+  },
+  "blocks": {
+    "riasec": {
+      "weight": 0.25,
+      "scale_id": "OI",
+      "include_in_knn": true,
+      "element_ids": [
+        "1.B.1.a",
+        "1.B.1.b",
+        "1.B.1.c",
+        "1.B.1.d",
+        "1.B.1.e",
+        "1.B.1.f"
+      ],
+      "element_names": {
+        "1.B.1.a": "Realistic",
+        "1.B.1.b": "Investigative",
+        "1.B.1.c": "Artistic",
+        "1.B.1.d": "Social",
+        "1.B.1.e": "Enterprising",
+        "1.B.1.f": "Conventional"
+      }
+    },
+    "sia": {
+      "weight": 0.2,
+      "scale_id": "OI",
+      "include_in_knn": true,
+      "element_ids": [
+        "1.B.3.a",
+        "1.B.3.aa",
+        "1.B.3.ab",
+        "1.B.3.ac",
+        "1.B.3.ad",
+        "1.B.3.ae",
+        "1.B.3.af",
+        "1.B.3.ag",
+        "1.B.3.ah",
+        "1.B.3.ai",
+        "1.B.3.aj",
+        "1.B.3.ak",
+        "1.B.3.al",
+        "1.B.3.am",
+        "1.B.3.an",
+        "1.B.3.ao",
+        "1.B.3.b",
+        "1.B.3.c",
+        "1.B.3.d",
+        "1.B.3.e",
+        "1.B.3.f",
+        "1.B.3.g",
+        "1.B.3.h",
+        "1.B.3.i",
+        "1.B.3.j",
+        "1.B.3.k",
+        "1.B.3.l",
+        "1.B.3.m",
+        "1.B.3.n",
+        "1.B.3.o",
+        "1.B.3.p",
+        "1.B.3.q",
+        "1.B.3.r",
+        "1.B.3.s",
+        "1.B.3.t",
+        "1.B.3.u",
+        "1.B.3.v",
+        "1.B.3.w",
+        "1.B.3.x",
+        "1.B.3.y",
+        "1.B.3.z"
+      ],
+      "element_names": {
+        "1.B.3.a": "Mechanics/Electronics",
+        "1.B.3.b": "Construction/Woodwork",
+        "1.B.3.c": "Transportation/Machine Operation",
+        "1.B.3.d": "Physical/Manual Labor",
+        "1.B.3.e": "Protective Service",
+        "1.B.3.f": "Agriculture",
+        "1.B.3.g": "Nature/Outdoors",
+        "1.B.3.h": "Animal Service",
+        "1.B.3.i": "Athletics",
+        "1.B.3.j": "Engineering",
+        "1.B.3.k": "Physical Science",
+        "1.B.3.l": "Life Science",
+        "1.B.3.m": "Medical Science",
+        "1.B.3.n": "Social Science",
+        "1.B.3.o": "Humanities",
+        "1.B.3.p": "Mathematics/Statistics",
+        "1.B.3.q": "Information Technology",
+        "1.B.3.r": "Visual Arts",
+        "1.B.3.s": "Applied Arts and Design",
+        "1.B.3.t": "Performing Arts",
+        "1.B.3.u": "Music",
+        "1.B.3.v": "Creative Writing",
+        "1.B.3.w": "Media",
+        "1.B.3.x": "Culinary Art",
+        "1.B.3.y": "Teaching/Education",
+        "1.B.3.z": "Social Service",
+        "1.B.3.aa": "Health Care Service",
+        "1.B.3.ab": "Religious Activities",
+        "1.B.3.ac": "Personal Service",
+        "1.B.3.ad": "Professional Advising",
+        "1.B.3.ae": "Business Initiatives",
+        "1.B.3.af": "Sales",
+        "1.B.3.ag": "Marketing/Advertising",
+        "1.B.3.ah": "Finance",
+        "1.B.3.ai": "Accounting",
+        "1.B.3.aj": "Human Resources",
+        "1.B.3.ak": "Office Work",
+        "1.B.3.al": "Management/Administration",
+        "1.B.3.am": "Public Speaking",
+        "1.B.3.an": "Politics",
+        "1.B.3.ao": "Law"
+      }
+    },
+    "knowledge": {
+      "weight": 0.1,
+      "scale_id": "IM",
+      "include_in_knn": true,
+      "element_ids": [
+        "2.C.1.a",
+        "2.C.1.b",
+        "2.C.1.c",
+        "2.C.1.d",
+        "2.C.1.e",
+        "2.C.1.f",
+        "2.C.10",
+        "2.C.2.a",
+        "2.C.2.b",
+        "2.C.3.a",
+        "2.C.3.b",
+        "2.C.3.c",
+        "2.C.3.d",
+        "2.C.3.e",
+        "2.C.4.a",
+        "2.C.4.b",
+        "2.C.4.c",
+        "2.C.4.d",
+        "2.C.4.e",
+        "2.C.4.f",
+        "2.C.4.g",
+        "2.C.5.a",
+        "2.C.5.b",
+        "2.C.6",
+        "2.C.7.a",
+        "2.C.7.b",
+        "2.C.7.c",
+        "2.C.7.d",
+        "2.C.7.e",
+        "2.C.8.a",
+        "2.C.8.b",
+        "2.C.9.a",
+        "2.C.9.b"
+      ],
+      "element_names": {
+        "2.C.1.a": "Administration and Management",
+        "2.C.1.b": "Administrative",
+        "2.C.1.c": "Economics and Accounting",
+        "2.C.1.d": "Sales and Marketing",
+        "2.C.1.e": "Customer and Personal Service",
+        "2.C.1.f": "Personnel and Human Resources",
+        "2.C.2.a": "Production and Processing",
+        "2.C.2.b": "Food Production",
+        "2.C.3.a": "Computers and Electronics",
+        "2.C.3.b": "Engineering and Technology",
+        "2.C.3.c": "Design",
+        "2.C.3.d": "Building and Construction",
+        "2.C.3.e": "Mechanical",
+        "2.C.4.a": "Mathematics",
+        "2.C.4.b": "Physics",
+        "2.C.4.c": "Chemistry",
+        "2.C.4.d": "Biology",
+        "2.C.4.e": "Psychology",
+        "2.C.4.f": "Sociology and Anthropology",
+        "2.C.4.g": "Geography",
+        "2.C.5.a": "Medicine and Dentistry",
+        "2.C.5.b": "Therapy and Counseling",
+        "2.C.6": "Education and Training",
+        "2.C.7.a": "English Language",
+        "2.C.7.b": "Foreign Language",
+        "2.C.7.c": "Fine Arts",
+        "2.C.7.d": "History and Archeology",
+        "2.C.7.e": "Philosophy and Theology",
+        "2.C.8.a": "Public Safety and Security",
+        "2.C.8.b": "Law and Government",
+        "2.C.9.a": "Telecommunications",
+        "2.C.9.b": "Communications and Media",
+        "2.C.10": "Transportation"
+      }
+    },
+    "essential_skills": {
+      "weight": 0.2,
+      "scale_id": "IM",
+      "include_in_knn": true,
+      "element_ids": [
+        "2.A.1.a",
+        "2.A.1.b",
+        "2.A.1.c",
+        "2.A.1.d",
+        "2.A.1.e",
+        "2.A.1.f",
+        "2.A.2.a",
+        "2.A.2.b",
+        "2.A.2.c",
+        "2.A.2.d"
+      ],
+      "element_names": {
+        "2.A.1.a": "Reading Comprehension",
+        "2.A.1.b": "Active Listening",
+        "2.A.1.c": "Writing",
+        "2.A.1.d": "Speaking",
+        "2.A.1.e": "Mathematics",
+        "2.A.1.f": "Science",
+        "2.A.2.a": "Critical Thinking",
+        "2.A.2.b": "Active Learning",
+        "2.A.2.c": "Learning Strategies",
+        "2.A.2.d": "Monitoring"
+      }
+    },
+    "transferable_skills": {
+      "weight": 0.15,
+      "scale_id": "IM",
+      "include_in_knn": true,
+      "element_ids": [
+        "2.B.2.i",
+        "2.B.3.e",
+        "2.B.1.e",
+        "2.B.1.c",
+        "2.B.1.d",
+        "2.B.5.a"
+      ],
+      "element_names": {
+        "2.B.1.c": "Persuasion",
+        "2.B.1.d": "Negotiation",
+        "2.B.1.e": "Instructing",
+        "2.B.2.i": "Complex Problem Solving",
+        "2.B.3.e": "Programming",
+        "2.B.5.a": "Time Management"
+      }
+    },
+    "work_styles": {
+      "weight": 0.1,
+      "scale_id": "WI",
+      "include_in_knn": true,
+      "element_ids": [
+        "1.D.1.a",
+        "1.D.1.b",
+        "1.D.1.i",
+        "1.D.2.d",
+        "1.D.3.b",
+        "1.D.4.a"
+      ],
+      "element_names": {
+        "1.D.1.a": "Innovation",
+        "1.D.1.b": "Achievement Orientation",
+        "1.D.1.i": "Leadership Orientation",
+        "1.D.2.d": "Cooperation",
+        "1.D.3.b": "Attention to Detail",
+        "1.D.4.a": "Stress Tolerance"
+      }
+    },
+    "work_context": {
+      "weight": null,
+      "scale_id": "CX",
+      "include_in_knn": false,
+      "element_ids": [
+        "4.C.2.a.1.a",
+        "4.C.2.a.1.c",
+        "4.C.1.b.1.e",
+        "4.C.1.b.1.f"
+      ],
+      "element_names": {
+        "4.C.1.b.1.e": "Work With or Contribute to a Work Group or Team",
+        "4.C.1.b.1.f": "Deal With External Customers or the Public in General",
+        "4.C.2.a.1.a": "Indoors, Environmentally Controlled",
+        "4.C.2.a.1.c": "Outdoors, Exposed to All Weather Conditions"
+      }
+    },
+    "work_activities": {
+      "weight": null,
+      "scale_id": "IM",
+      "include_in_knn": false,
+      "element_ids": [
+        "4.A.1.a.1",
+        "4.A.1.a.2",
+        "4.A.1.b.1",
+        "4.A.1.b.2",
+        "4.A.1.b.3",
+        "4.A.2.a.1",
+        "4.A.2.a.2",
+        "4.A.2.a.3",
+        "4.A.2.a.4",
+        "4.A.2.b.1",
+        "4.A.2.b.2",
+        "4.A.2.b.3",
+        "4.A.2.b.4",
+        "4.A.2.b.5",
+        "4.A.2.b.6",
+        "4.A.3.a.1",
+        "4.A.3.a.2",
+        "4.A.3.a.3",
+        "4.A.3.a.4",
+        "4.A.3.b.1",
+        "4.A.3.b.2",
+        "4.A.3.b.4",
+        "4.A.3.b.5",
+        "4.A.3.b.6",
+        "4.A.4.a.1",
+        "4.A.4.a.2",
+        "4.A.4.a.3",
+        "4.A.4.a.4",
+        "4.A.4.a.5",
+        "4.A.4.a.6",
+        "4.A.4.a.7",
+        "4.A.4.a.8",
+        "4.A.4.b.1",
+        "4.A.4.b.2",
+        "4.A.4.b.3",
+        "4.A.4.b.4",
+        "4.A.4.b.5",
+        "4.A.4.b.6",
+        "4.A.4.c.1",
+        "4.A.4.c.2",
+        "4.A.4.c.3"
+      ],
+      "element_names": {
+        "4.A.1.a.1": "Getting Information",
+        "4.A.1.a.2": "Monitoring Processes, Materials, or Surroundings",
+        "4.A.1.b.1": "Identifying Objects, Actions, and Events",
+        "4.A.1.b.2": "Inspecting Equipment, Structures, or Materials",
+        "4.A.1.b.3": "Estimating the Quantifiable Characteristics of Products, Events, or Information",
+        "4.A.2.a.1": "Judging the Qualities of Objects, Services, or People",
+        "4.A.2.a.2": "Processing Information",
+        "4.A.2.a.3": "Evaluating Information to Determine Compliance with Standards",
+        "4.A.2.a.4": "Analyzing Data or Information",
+        "4.A.2.b.1": "Making Decisions and Solving Problems",
+        "4.A.2.b.2": "Thinking Creatively",
+        "4.A.2.b.3": "Updating and Using Relevant Knowledge",
+        "4.A.2.b.4": "Developing Objectives and Strategies",
+        "4.A.2.b.5": "Scheduling Work and Activities",
+        "4.A.2.b.6": "Organizing, Planning, and Prioritizing Work",
+        "4.A.3.a.1": "Performing General Physical Activities",
+        "4.A.3.a.2": "Handling and Moving Objects",
+        "4.A.3.a.3": "Controlling Machines and Processes",
+        "4.A.3.a.4": "Operating Vehicles, Mechanized Devices, or Equipment",
+        "4.A.3.b.1": "Working with Computers",
+        "4.A.3.b.2": "Drafting, Laying Out, and Specifying Technical Devices, Parts, and Equipment",
+        "4.A.3.b.4": "Repairing and Maintaining Mechanical Equipment",
+        "4.A.3.b.5": "Repairing and Maintaining Electronic Equipment",
+        "4.A.3.b.6": "Documenting/Recording Information",
+        "4.A.4.a.1": "Interpreting the Meaning of Information for Others",
+        "4.A.4.a.2": "Communicating with Supervisors, Peers, or Subordinates",
+        "4.A.4.a.3": "Communicating with People Outside the Organization",
+        "4.A.4.a.4": "Establishing and Maintaining Interpersonal Relationships",
+        "4.A.4.a.5": "Assisting and Caring for Others",
+        "4.A.4.a.6": "Selling or Influencing Others",
+        "4.A.4.a.7": "Resolving Conflicts and Negotiating with Others",
+        "4.A.4.a.8": "Performing for or Working Directly with the Public",
+        "4.A.4.b.1": "Coordinating the Work and Activities of Others",
+        "4.A.4.b.2": "Developing and Building Teams",
+        "4.A.4.b.3": "Training and Teaching Others",
+        "4.A.4.b.4": "Guiding, Directing, and Motivating Subordinates",
+        "4.A.4.b.5": "Coaching and Developing Others",
+        "4.A.4.b.6": "Providing Consultation and Advice to Others",
+        "4.A.4.c.1": "Performing Administrative Activities",
+        "4.A.4.c.2": "Staffing Organizational Units",
+        "4.A.4.c.3": "Monitoring and Controlling Resources"
+      }
+    },
+    "education": {
+      "weight": null,
+      "scale_id": "RL",
+      "include_in_knn": false,
+      "element_ids": [
+        "2.D.1"
+      ],
+      "element_names": {
+        "2.D.1": "Required Level of Education"
+      }
+    }
+  },
+  "notes": [
+    "Raw O*NET files are never modified by ingest.",
+    "Normalisation uses official Scales Reference min/max, not empirical ranges.",
+    "Recommend Suppress drops a feature value; Not Relevant floors Importance to 1.0.",
+    "Abilities and Work Values are not included in this snapshot.",
+    "Work Context is stored for rules, not for KNN."
+  ]
+}

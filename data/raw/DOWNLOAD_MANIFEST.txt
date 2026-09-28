@@ -1,0 +1,29 @@
+source=https://www.onetcenter.org/database.html
+version=O*NET 30.3
+release=May 2026
+license=Creative Commons Attribution 4.0 International
+license_url=https://www.onetcenter.org/license_db.html
+dictionary=https://www.onetcenter.org/dictionary/30.3/text/
+download_base=https://www.onetcenter.org/dl_files/database/db_30_3_text/
+manifest_updated_utc=2026-08-19T23:04:19Z
+format=tab-delimited text
+
+file=Career Interest Types.txt	bytes=629058	sha256=6d9a78bc145c7813e1f59a4fc9e30008f806d416673f9bea132b204c7c79939a
+file=Content Model Reference.txt	bytes=234750	sha256=963cef6d043a58e16abcb645ea5e438f627704f510bf07a1fedf8e8e17893cc7
+file=Education Categories.txt	bytes=1823	sha256=f42674e759eab75034df808901525f8ba81519853e398002c828bf5f3443348d
+file=Education.txt	bytes=1108076	sha256=551b94176070b4c29e4383e9b5937071c50e59d44118ff983db569e766a74954
+file=Essential Skills.txt	bytes=1539626	sha256=cb387171afbc976b40790aa79946d0ba7eeb667d7fbd5d7610b3e4da288506d4
+file=Job Zone Reference.txt	bytes=3660	sha256=c2b8d5e13d4fc681518197175e9274946bf5653895e388ee38c1803295f39ff5
+file=Job Zones.txt	bytes=28028	sha256=5f0b6b0fb560fff80657afa8e07b104bc8433a7629a7565d345d9bcdb24df7c3
+file=Knowledge.txt	bytes=5605166	sha256=d9601dd763d5b3b203dd8827a3c2bd6c1b3d6155c1674168f0ef30b0e005cf07
+file=Occupation Data.txt	bytes=265794	sha256=63e6029d3d30ff5c7cf39b5304a733b77a409e01c65ae7095fe92f6d18d74a66
+file=Occupation Level Metadata.txt	bytes=2621846	sha256=346869865cc98f25a72c4cbf02b69d537d277081e7708addd967e1c127f5b870
+file=Read Me.txt	bytes=506	sha256=9ea0df5cc8fe0b6c4bd5c257db455e8dba8e09637578f25da64aaa16c6ebf417
+file=Scales Reference.txt	bytes=950	sha256=a4c2f725b0c954882398789bb90c752d2c752d335fc526390ab61ca730a13087
+file=Specific Interest Areas.txt	bytes=4563781	sha256=4cc0852004d4cb52e8e118a327c53d20b6a8af96455614f1c0634bc789fef6c6
+file=Training and Experience Categories.txt	bytes=2169	sha256=74c3796df9f531a58860c3727591194b5cfe46c8bbc1b5d8102b9b3c452dd759
+file=Training and Experience.txt	bytes=2525556	sha256=a197b61def47782e9ec5adc2f009fab3586f521c390a4998a9b67aefe3bfcca5
+file=Transferable Skills.txt	bytes=4105406	sha256=c38338e9130b3374af597ececbb73f639088263e60f0bedde18a5b5e64f85f2c
+file=Work Activities.txt	bytes=2985984	sha256=94d131ab318a251b376cbbb52a32641da9a183777587908bd6d08b9d9e18ddfd
+file=Work Context Categories.txt	bytes=23269	sha256=c10536131f81056d81acf44db1c6f3efb19c09a44420a805f36020db7d1489db
+file=Work Styles.txt	bytes=2279557	sha256=c6ce3c72bf0e4849b807b31cb263b832b25cca78b529c003f68271e6ba9d10ac

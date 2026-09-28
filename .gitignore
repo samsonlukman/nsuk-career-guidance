@@ -1,0 +1,36 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+build/
+
+# OS / editor
+.DS_Store
+*.swp
+
+# O*NET raw TSV/zip stay local. The processed 30.3 snapshot is committed so
+# a hosted demo can load occupations without re-downloading raw files.
+data/raw/db_30_3_text/
+data/raw/*.zip
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/README.md
+!data/processed/onet_30_3_v1/
+!data/processed/onet_30_3_v1/**
+
+# Evaluation exports may contain participant feedback
+data/evaluation/exports/*
+!data/evaluation/exports/.gitkeep
