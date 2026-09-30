@@ -20,37 +20,29 @@ export function AssessmentCompletePage() {
     <article className="prose-page">
       <PageHeader
         eyebrow="Assessment submitted"
-        title="Your answers were sent to the recommendation service"
-        description="The server has stored this assessment and created a recommendation run. Open the results to read the occupations returned by the API."
+        title="Your assessment is complete"
+        description="Your answers have been saved and your career recommendations are ready. Open the results to see the careers suggested for you."
       />
       {confirmation ? (
         <dl className="meta-list">
           <div>
-            <dt>Recommendation run</dt>
-            <dd>{confirmation.id}</dd>
-          </div>
-          <div>
-            <dt>Created</dt>
+            <dt>Prepared</dt>
             <dd>{formatDateTime(confirmation.created_at)}</dd>
           </div>
           <div>
-            <dt>Questionnaire</dt>
-            <dd>{confirmation.questionnaire_version}</dd>
-          </div>
-          <div>
-            <dt>Occupations stored for later review</dt>
+            <dt>Careers ready to review</dt>
             <dd>{confirmation.item_count}</dd>
           </div>
         </dl>
       ) : (
         <Alert tone="info">
           If you arrived here without submitting, start from the questionnaire. No placeholder
-          occupations are shown.
+          careers are shown.
         </Alert>
       )}
       <p>
-        Previous recommendation runs stay in your history. Starting another assessment does not
-        delete this one.
+        Previous results stay in your history. Starting another assessment does not delete this
+        one.
       </p>
       <div className="hero-actions">
         {confirmation ? (

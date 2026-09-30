@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, expect, test } from 'vitest'
 
 import { jsonResponse, renderApp, restoreFetch, studentUser, stubFetch } from '../test/helpers'
@@ -11,6 +12,11 @@ function stubRun(handler?: (url: string, init?: RequestInit) => Promise<Response
     }
     const extra = handler?.(url, init)
     if (extra) return extra
+    if (url.includes(`/api/v1/recommendations/${RUN_ID}/experience-evaluation`)) {
+      return jsonResponse(404, {
+        error: { code: 'experience_evaluation_not_found', message: 'Experience evaluation was not found' },
+      })
+    }
     if (url.includes(`/api/v1/recommendations/${RUN_ID}`)) {
       return jsonResponse(200, mockRecommendationRun)
     }
@@ -27,13 +33,13 @@ test('loads persisted recommendations in rank order', async () => {
   renderApp(`/recommendations/${RUN_ID}`)
 
   expect(await screen.findByRole('heading', { name: 'Your Career Recommendations' })).toBeInTheDocument()
-  expect(screen.getByText(/comparing your assessment profile/)).toBeInTheDocument()
-  const titles = screen.getAllByRole('heading', { level: 2 }).map((node) => node.textContent)
+  expect(screen.getByText(/comparing your assessment answers/)).toBeInTheDocument()
+  const titles = [...document.querySelectorAll('.recommendation-card h2')].map((node) => node.textContent)
   expect(titles[0]).toContain('Computer Science Teachers, Postsecondary')
   expect(titles[1]).toContain('Architecture Teachers, Postsecondary')
   expect(titles[2]).toContain('Dietitians and Nutritionists')
   expect(screen.getByText('Closest profile match')).toBeInTheDocument()
-  expect(screen.getAllByText(/Profile similarity/)[0]).toBeInTheDocument()
+  expect(screen.getAllByText(/Match score/)[0]).toBeInTheDocument()
   expect(screen.getByText('0.833')).toBeInTheDocument()
   expect(screen.queryByText(/87% chance/)).not.toBeInTheDocument()
   expect(screen.queryByText(/Weighted Block Cosine/)).not.toBeInTheDocument()
@@ -105,7 +111,7 @@ test('handles a malformed recommendation payload', async () => {
     return undefined
   })
   renderApp(`/recommendations/${RUN_ID}`)
-  expect(await screen.findByRole('alert')).toHaveTextContent('The recommendation data could not be displayed.')
+  expect(await screen.findByRole('alert')).toHaveTextContent('Your career results could not be displayed.')
 })
 
 test('renders recommendation cards in a list suitable for narrow screens', async () => {
@@ -117,11 +123,23 @@ test('renders recommendation cards in a list suitable for narrow screens', async
   expect(FLAG_ITEM_ID).toBeTruthy()
 })
 
-test('offers an experience evaluation after recommendations', async () => {
+test('opens the experience evaluation as a modal after recommendations', async () => {
   stubRun()
   renderApp(`/recommendations/${RUN_ID}`)
   await screen.findByRole('heading', { name: 'Your Career Recommendations' })
-  const evaluate = screen.getByRole('link', { name: 'Evaluate Your Experience' })
-  expect(evaluate).toHaveAttribute('href', `/recommendations/${RUN_ID}/evaluate`)
-  expect(screen.queryByText(/accuracy test/i)).not.toBeInTheDocument()
+  expect(await screen.findByRole('dialog', { name: 'Evaluate Your Experience' })).toBeInTheDocument()
+  expect(screen.getByText(/not an accuracy test/i)).toBeInTheDocument()
+  expect(screen.queryByText(/accuracy test of the recommendations/i)).not.toBeInTheDocument()
+  expect(screen.queryByText(/O\*NET/i)).not.toBeInTheDocument()
+})
+
+test('does not auto-open the evaluation again after it has been closed', async () => {
+  stubRun()
+  const user = userEvent.setup()
+  renderApp(`/recommendations/${RUN_ID}`)
+  await screen.findByRole('dialog', { name: 'Evaluate Your Experience' })
+  await user.click(screen.getByRole('button', { name: 'Close' }))
+  expect(screen.queryByRole('dialog', { name: 'Evaluate Your Experience' })).not.toBeInTheDocument()
+  await user.click(screen.getByRole('button', { name: 'Evaluate Your Experience' }))
+  expect(screen.getByRole('dialog', { name: 'Evaluate Your Experience' })).toBeInTheDocument()
 })

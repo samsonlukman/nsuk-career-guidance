@@ -54,7 +54,7 @@ export async function apiRequest<T>(path: string, init: RequestInit = {}): Promi
       credentials: 'include',
     })
   } catch {
-    throw new ApiError(0, 'network_error', 'Unable to reach the server. Check your connection and try again.')
+    throw new ApiError(0, 'network_error', 'Unable to connect. Check your connection and try again.')
   }
 
   const body = await parseBody(response)

@@ -101,7 +101,7 @@ export function RegisterPage() {
         <FormField
           id="password"
           label="Password"
-          hint="At least 8 characters. The server stores a hash, never the password itself."
+          hint="At least 8 characters."
         >
           <input
             id="password"
@@ -114,7 +114,7 @@ export function RegisterPage() {
             onChange={(event) => setPassword(event.target.value)}
             aria-describedby={describedByFor(
               'password',
-              'At least 8 characters. The server stores a hash, never the password itself.',
+              'At least 8 characters.',
             )}
           />
         </FormField>

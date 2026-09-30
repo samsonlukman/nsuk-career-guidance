@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ApiError } from '../api/client'
 import { fetchOccupation } from '../api/occupations'
-import { fetchRecommendationRun } from '../api/recommendations'
+import { fetchExperienceEvaluation, fetchRecommendationRun } from '../api/recommendations'
 import { Alert } from '../components/Alert'
-import { ButtonLink } from '../components/Button'
+import { Button, ButtonLink } from '../components/Button'
+import { ExperienceEvaluationModal } from '../components/experience/ExperienceEvaluationModal'
 import { ContributionGroups } from '../components/recommendations/ContributionGroups'
 import { JobZoneNote } from '../components/recommendations/JobZoneNote'
 import { RatingForm } from '../components/recommendations/RatingForm'
@@ -14,7 +15,9 @@ import { SimilarityScore } from '../components/recommendations/SimilarityScore'
 import { PageHeader } from '../components/PageHeader'
 import { Spinner } from '../components/Spinner'
 import type { OccupationDetail, RecommendationRun } from '../types/recommendations'
+import { hasSeenExperienceEvaluation, markExperienceEvaluationSeen } from '../utils/experienceEvaluationPrompt'
 import { isRecommendationRun, neighbors, orderedItems, recommendationLoadError, visibleFlags } from '../utils/recommendations'
+import { studentFacingText } from '../utils/studentFacingText'
 
 export function RecommendationDetailPage() {
   const { runId, itemId } = useParams()
@@ -23,6 +26,18 @@ export function RecommendationDetailPage() {
   const [occupationError, setOccupationError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [evaluateOpen, setEvaluateOpen] = useState(false)
+
+  const openEvaluation = useCallback(() => {
+    if (!runId) return
+    markExperienceEvaluationSeen(runId)
+    setEvaluateOpen(true)
+  }, [runId])
+
+  const closeEvaluation = useCallback(() => {
+    if (runId) markExperienceEvaluationSeen(runId)
+    setEvaluateOpen(false)
+  }, [runId])
 
   const items = useMemo(() => (run ? orderedItems(run) : []), [run])
   const { current, previous, next } = useMemo(
@@ -43,7 +58,7 @@ export function RecommendationDetailPage() {
       .then((data) => {
         if (cancelled) return
         if (!isRecommendationRun(data)) {
-          setError('The recommendation data could not be displayed.')
+          setError('Your career results could not be displayed.')
           setRun(null)
           return
         }
@@ -85,6 +100,27 @@ export function RecommendationDetailPage() {
     }
   }, [current])
 
+  useEffect(() => {
+    if (!runId || !current || next) return
+    let cancelled = false
+    fetchExperienceEvaluation(runId)
+      .then(() => {
+        if (!cancelled) markExperienceEvaluationSeen(runId)
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return
+        if (err instanceof ApiError && err.code === 'experience_evaluation_not_found') {
+          if (!hasSeenExperienceEvaluation(runId)) {
+            markExperienceEvaluationSeen(runId)
+            setEvaluateOpen(true)
+          }
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [current, next, runId])
+
   if (loading) {
     return <Spinner label="Loading career details" />
   }
@@ -123,9 +159,8 @@ export function RecommendationDetailPage() {
       <PageHeader
         eyebrow={`Rank ${current.rank} of ${items.length}`}
         title={occupation?.title ?? current.title}
-        description="Details below come from the stored recommendation run and the O*NET occupation record. Nothing here is invented for display."
+        description="These details explain why this career was suggested from your assessment."
       />
-      <p className="recommendation-soc">O*NET-SOC {current.onetsoc_code}</p>
       <SimilarityScore
         rank={current.rank}
         recommendationScore={current.recommendation_score}
@@ -134,7 +169,7 @@ export function RecommendationDetailPage() {
 
       <section aria-labelledby="why-heading">
         <h2 id="why-heading">Why this was recommended</h2>
-        <p>{current.explanation}</p>
+        <p>{studentFacingText(current.explanation)}</p>
       </section>
 
       <section aria-labelledby="factors-heading">
@@ -186,7 +221,7 @@ export function RecommendationDetailPage() {
             ) : null}
             {occupation.work_activities.length > 0 ? (
               <>
-                <h3>O*NET work activities</h3>
+                <h3>Typical work activities</h3>
                 <ul>
                   {occupation.work_activities.map((row) => (
                     <li key={row.element_id}>{row.name}</li>
@@ -217,6 +252,7 @@ export function RecommendationDetailPage() {
         ) : null}
       </nav>
       <div className="hero-actions">
+        <Button onClick={openEvaluation}>Evaluate Your Experience</Button>
         <ButtonLink to={`/recommendations/${run.id}`} variant="secondary">
           Back to recommendations
         </ButtonLink>
@@ -227,6 +263,7 @@ export function RecommendationDetailPage() {
           Start New Assessment
         </ButtonLink>
       </div>
+      <ExperienceEvaluationModal runId={run.id} open={evaluateOpen} onClose={closeEvaluation} />
     </article>
   )
 }

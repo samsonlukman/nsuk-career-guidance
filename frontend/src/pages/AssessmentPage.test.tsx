@@ -171,10 +171,9 @@ test('shows the review screen and submits once', async () => {
   const user = userEvent.setup()
   renderApp('/assessment')
   expect(await screen.findByRole('heading', { name: 'Review and submit' })).toBeInTheDocument()
-  expect(screen.getByText('questionnaire_v1')).toBeInTheDocument()
   expect(screen.getByText(/Computers — 6/)).toBeInTheDocument()
   await user.click(screen.getByRole('button', { name: 'Submit Assessment' }))
-  expect(await screen.findByRole('heading', { name: /Your answers were sent/ })).toBeInTheDocument()
+  expect(await screen.findByRole('heading', { name: 'Your assessment is complete' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'View My Career Recommendations' })).toHaveAttribute(
     'href',
     `/recommendations/${mockSubmitConfirmation.id}`,

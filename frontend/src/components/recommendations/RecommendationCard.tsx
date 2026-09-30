@@ -1,4 +1,5 @@
 import type { RecommendationItem } from '../../types/recommendations'
+import { studentFacingText } from '../../utils/studentFacingText'
 import { visibleFlags } from '../../utils/recommendations'
 import { ButtonLink } from '../Button'
 import { RuleFlagList } from './RuleFlagList'
@@ -20,7 +21,6 @@ export function RecommendationCard({ runId, item }: RecommendationCardProps) {
           <span className="visually-hidden">Rank {item.rank}: </span>
           {item.title}
         </h2>
-        <p className="recommendation-soc">O*NET-SOC {item.onetsoc_code}</p>
         {item.job_zone != null ? (
           <p className="recommendation-zone">
             Job Zone {item.job_zone}
@@ -35,7 +35,7 @@ export function RecommendationCard({ runId, item }: RecommendationCardProps) {
       />
       <section aria-labelledby={`why-${item.id}`}>
         <h3 id={`why-${item.id}`}>Why this was recommended</h3>
-        <p>{item.explanation}</p>
+        <p>{studentFacingText(item.explanation)}</p>
       </section>
       <RuleFlagList flags={flags} />
       <div className="hero-actions">

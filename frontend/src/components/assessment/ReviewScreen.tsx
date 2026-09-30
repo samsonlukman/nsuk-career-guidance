@@ -4,16 +4,12 @@ import { questionsInSection, sectionTitle, sectionsInOrder } from '../../utils/q
 import { Alert } from '../Alert'
 
 type ReviewScreenProps = {
-  questionnaireVersion: string
-  featureVersion: string
   questions: Question[]
   answers: AnswerMap
   onEdit: (index: number) => void
 }
 
 export function ReviewScreen({
-  questionnaireVersion,
-  featureVersion,
   questions,
   answers,
   onEdit,
@@ -24,19 +20,9 @@ export function ReviewScreen({
   return (
     <div className="review-screen">
       <p className="lede">
-        Check your answers before submitting. Submitting sends them to the server, which will
-        generate personalized recommendations. Scoring happens on the server, not in this page.
+        Check your answers before submitting. After you submit, you will receive personalised
+        career recommendations based on this assessment.
       </p>
-      <dl className="meta-list">
-        <div>
-          <dt>Questionnaire</dt>
-          <dd>{questionnaireVersion}</dd>
-        </div>
-        <div>
-          <dt>Feature version</dt>
-          <dd>{featureVersion}</dd>
-        </div>
-      </dl>
 
       {incomplete.length > 0 ? (
         <Alert>

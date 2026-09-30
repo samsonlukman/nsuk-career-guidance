@@ -21,8 +21,10 @@ test('landing page explains the system and uses the primary CTA', async () => {
   ).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Start Your Career Assessment' })).toHaveAttribute('href', '/register')
   expect(screen.getByText(/undergraduate students of Nasarawa State University, Keffi/i)).toBeInTheDocument()
-  expect(screen.getAllByText(/AI-based similarity analysis/i).length).toBeGreaterThan(0)
   expect(screen.getByText(/does not replace counsellors/i)).toBeInTheDocument()
+  expect(document.body.textContent ?? '').not.toMatch(/O\*NET/i)
+  expect(document.body.textContent ?? '').not.toMatch(/k-nearest/i)
+  expect(document.body.textContent ?? '').not.toMatch(/\bAPI\b/)
 
   const text = document.body.textContent ?? ''
   expect(text.toLowerCase()).not.toMatch(/guaranteed employment/)

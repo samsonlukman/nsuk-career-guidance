@@ -132,7 +132,7 @@ test('inspects a persisted recommendation run without inventing scores', async (
   expect(screen.getByText(/amina@example.nsuk.test/i)).toBeInTheDocument()
   expect(screen.getAllByText(/Dietitians and Nutritionists/).length).toBeGreaterThan(0)
   expect(screen.getAllByText(/Why this was recommended/).length).toBeGreaterThan(0)
-  expect(screen.getAllByText(/Profile similarity/i).length).toBeGreaterThan(0)
+  expect(screen.getAllByText(/Match score/i).length).toBeGreaterThan(0)
   expect(screen.queryByText(/87% chance/i)).not.toBeInTheDocument()
 })
 

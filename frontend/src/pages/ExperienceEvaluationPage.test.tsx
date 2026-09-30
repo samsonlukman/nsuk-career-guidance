@@ -55,9 +55,9 @@ test('shows the experience evaluation form after recommendations', async () => {
   renderApp(`/recommendations/${RUN_ID}/evaluate`)
 
   expect(await screen.findByRole('heading', { name: 'Evaluate Your Experience' })).toBeInTheDocument()
+  expect(await screen.findByText(/The assessment questions were easy to understand/)).toBeInTheDocument()
   expect(screen.getByText(/not an accuracy test/i)).toBeInTheDocument()
   expect(screen.queryByText(/accuracy test of the recommendations/i)).not.toBeInTheDocument()
-  expect(screen.getByText(/The assessment questions were easy to understand/)).toBeInTheDocument()
   expect(screen.getByText(/I would discuss the recommendations with a career counsellor/)).toBeInTheDocument()
   expect(
     screen.getByLabelText('11. What did you like most about the system, and what improvement would you suggest?'),
@@ -69,7 +69,7 @@ test('requires every scaled answer before submit', async () => {
   stubEvaluation()
   const user = userEvent.setup()
   renderApp(`/recommendations/${RUN_ID}/evaluate`)
-  await screen.findByRole('heading', { name: 'Evaluate Your Experience' })
+  await screen.findByRole('button', { name: 'Submit evaluation' })
   await user.click(screen.getByRole('button', { name: 'Submit evaluation' }))
   expect(await screen.findByRole('alert')).toHaveTextContent('Please answer every question on the 1 to 5 scale')
 })
@@ -87,7 +87,7 @@ test('submits the experience evaluation without calling it accuracy', async () =
   })
   const user = userEvent.setup()
   renderApp(`/recommendations/${RUN_ID}/evaluate`)
-  await screen.findByRole('heading', { name: 'Evaluate Your Experience' })
+  await screen.findByRole('button', { name: 'Submit evaluation' })
 
   for (const prompt of [
     'The assessment questions were easy to understand.',
@@ -114,7 +114,7 @@ test('submits the experience evaluation without calling it accuracy', async () =
   )
   await user.click(screen.getByRole('button', { name: 'Submit evaluation' }))
 
-  expect(await screen.findByText(/Your experience evaluation for this recommendation run has been saved/)).toBeInTheDocument()
+  expect(await screen.findByText(/Your experience evaluation has been saved/)).toBeInTheDocument()
   expect(screen.getAllByText(/not an accuracy test/i).length).toBeGreaterThan(0)
   expect(fetchMock.mock.calls.some(([url, init]) => String(url).includes('experience-evaluation') && init?.method === 'POST')).toBe(
     true,
@@ -129,7 +129,7 @@ test('shows a saved evaluation instead of asking again', async () => {
     return undefined
   })
   renderApp(`/recommendations/${RUN_ID}/evaluate`)
-  expect(await screen.findByText(/Your experience evaluation for this recommendation run has been saved/)).toBeInTheDocument()
+  expect(await screen.findByText(/Your experience evaluation has been saved/)).toBeInTheDocument()
   expect(screen.queryByRole('button', { name: 'Submit evaluation' })).not.toBeInTheDocument()
   expect(screen.getByDisplayValue('Clear explanations.')).toBeDisabled()
 })

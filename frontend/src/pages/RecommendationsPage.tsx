@@ -1,26 +1,41 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ApiError } from '../api/client'
-import { fetchRecommendationRun } from '../api/recommendations'
+import { fetchExperienceEvaluation, fetchRecommendationRun } from '../api/recommendations'
 import { Alert } from '../components/Alert'
-import { ButtonLink } from '../components/Button'
+import { Button, ButtonLink } from '../components/Button'
+import { ExperienceEvaluationModal } from '../components/experience/ExperienceEvaluationModal'
 import { RecommendationCard } from '../components/recommendations/RecommendationCard'
 import { PageHeader } from '../components/PageHeader'
 import { Spinner } from '../components/Spinner'
 import type { RecommendationRun } from '../types/recommendations'
+import { hasSeenExperienceEvaluation, markExperienceEvaluationSeen } from '../utils/experienceEvaluationPrompt'
 import { formatDateTime } from '../utils/formatDate'
 import { isRecommendationRun, orderedItems, recommendationLoadError } from '../utils/recommendations'
+import { studentFacingNotes } from '../utils/studentFacingText'
 
 export function RecommendationsPage() {
   const { runId } = useParams()
   const [run, setRun] = useState<RecommendationRun | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [evaluateOpen, setEvaluateOpen] = useState(false)
+
+  const openEvaluation = useCallback(() => {
+    if (!runId) return
+    markExperienceEvaluationSeen(runId)
+    setEvaluateOpen(true)
+  }, [runId])
+
+  const closeEvaluation = useCallback(() => {
+    if (runId) markExperienceEvaluationSeen(runId)
+    setEvaluateOpen(false)
+  }, [runId])
 
   useEffect(() => {
     if (!runId) {
-      setError('This recommendation run was not found.')
+      setError('These career results were not found.')
       setLoading(false)
       return
     }
@@ -31,7 +46,7 @@ export function RecommendationsPage() {
       .then((data) => {
         if (cancelled) return
         if (!isRecommendationRun(data)) {
-          setError('The recommendation data could not be displayed.')
+          setError('Your career results could not be displayed.')
           setRun(null)
           return
         }
@@ -39,7 +54,7 @@ export function RecommendationsPage() {
       })
       .catch((err: unknown) => {
         if (cancelled) return
-        const apiError = err instanceof ApiError ? err : { message: 'The recommendation could not be loaded.' }
+        const apiError = err instanceof ApiError ? err : { message: 'Your career results could not be loaded.' }
         setError(recommendationLoadError(apiError))
         setRun(null)
       })
@@ -51,7 +66,29 @@ export function RecommendationsPage() {
     }
   }, [runId])
 
+  useEffect(() => {
+    if (!runId || !run) return
+    let cancelled = false
+    fetchExperienceEvaluation(runId)
+      .then(() => {
+        if (!cancelled) markExperienceEvaluationSeen(runId)
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return
+        if (err instanceof ApiError && err.code === 'experience_evaluation_not_found') {
+          if (!hasSeenExperienceEvaluation(runId)) {
+            markExperienceEvaluationSeen(runId)
+            setEvaluateOpen(true)
+          }
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [run, runId])
+
   const items = useMemo(() => (run ? orderedItems(run) : []), [run])
+  const notes = useMemo(() => (run ? studentFacingNotes(run.notes) : []), [run])
 
   if (loading) {
     return <Spinner label="Loading your recommendations" />
@@ -60,7 +97,7 @@ export function RecommendationsPage() {
   if (error || !run) {
     return (
       <article className="results-page">
-        <Alert>{error ?? 'The recommendation could not be loaded.'}</Alert>
+        <Alert>{error ?? 'Your career results could not be loaded.'}</Alert>
         {error?.includes('session has expired') ? (
           <p>
             <Link to="/login">Return to log in</Link>
@@ -76,25 +113,21 @@ export function RecommendationsPage() {
   return (
     <article className="results-page">
       <PageHeader
-        eyebrow="Recommendation results"
+        eyebrow="Your results"
         title="Your Career Recommendations"
-        description="These careers were selected by comparing your assessment profile with occupational characteristics in the O*NET database. They are meant to support career exploration and decision-making. They do not guarantee success, predict employment, or determine your career."
+        description="These careers were selected by comparing your assessment answers with occupational information. They are meant to support career exploration and decision-making. They do not guarantee success, predict employment, or determine your career."
       />
       <dl className="meta-list">
         <div>
-          <dt>Generated</dt>
+          <dt>Prepared</dt>
           <dd>{formatDateTime(run.created_at)}</dd>
         </div>
         <div>
           <dt>Recommendations shown</dt>
           <dd>{items.length}</dd>
         </div>
-        <div>
-          <dt>Questionnaire</dt>
-          <dd>{run.questionnaire_version}</dd>
-        </div>
       </dl>
-      {run.notes.map((note) => (
+      {notes.map((note) => (
         <Alert key={note} tone="info">
           {note}
         </Alert>
@@ -107,7 +140,7 @@ export function RecommendationsPage() {
         ))}
       </ol>
       <div className="hero-actions">
-        <ButtonLink to={`/recommendations/${run.id}/evaluate`}>Evaluate Your Experience</ButtonLink>
+        <Button onClick={openEvaluation}>Evaluate Your Experience</Button>
         <ButtonLink to="/dashboard" variant="secondary">
           Back to Dashboard
         </ButtonLink>
@@ -115,6 +148,7 @@ export function RecommendationsPage() {
           Start New Assessment
         </ButtonLink>
       </div>
+      <ExperienceEvaluationModal runId={run.id} open={evaluateOpen} onClose={closeEvaluation} />
     </article>
   )
 }

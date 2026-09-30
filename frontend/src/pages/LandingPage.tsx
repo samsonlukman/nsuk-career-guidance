@@ -28,9 +28,8 @@ export function LandingPage() {
           <h2 id="what-heading">What this system is</h2>
           <p>
             This is a career exploration tool for undergraduate students of Nasarawa State
-            University, Keffi. After you complete an assessment, the system ranks occupations
-            from the official O*NET 30.3 occupational database using a combination of explicit
-            eligibility rules and AI-based similarity analysis.
+            University, Keffi. After you complete an assessment, the system suggests careers
+            that match the interests, skills, and preferences you described.
           </p>
         </div>
         <div>
@@ -57,8 +56,7 @@ export function LandingPage() {
           </li>
           <li>
             <strong>Review a ranked shortlist</strong>
-            Occupations are scored by similarity to your answers and filtered by published rules
-            such as job-zone suitability for undergraduates.
+            You receive a shortlist of careers that match the profile you described.
           </li>
         </ol>
       </section>
@@ -66,10 +64,9 @@ export function LandingPage() {
       <section className="notice-panel" aria-labelledby="basis-heading">
         <h2 id="basis-heading">What recommendations are based on</h2>
         <p>
-          Recommendations use official occupational descriptors (interests, skills, knowledge,
-          work styles, and related information) together with AI-based similarity analysis. A
-          higher score means a closer match to the profile you described, not a forecast of
-          employment, income, or academic performance.
+          Recommendations use the interests, skills, knowledge, work styles, and workplace
+          preferences you provided. A higher match means a closer fit to the profile you
+          described, not a forecast of employment, income, or academic performance.
         </p>
         <p>
           The system is intended to <strong>support</strong> professional career counselling. It

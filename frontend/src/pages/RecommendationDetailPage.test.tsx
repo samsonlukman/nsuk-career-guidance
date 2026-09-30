@@ -20,6 +20,11 @@ function stubDetail(handler?: (url: string, init?: RequestInit) => Promise<Respo
     }
     const extra = handler?.(url, init)
     if (extra) return extra
+    if (url.includes(`/api/v1/recommendations/${RUN_ID}/experience-evaluation`)) {
+      return jsonResponse(404, {
+        error: { code: 'experience_evaluation_not_found', message: 'Experience evaluation was not found' },
+      })
+    }
     if (url.includes(`/api/v1/recommendations/${RUN_ID}`)) {
       return jsonResponse(200, mockRecommendationRun)
     }
@@ -41,7 +46,8 @@ test('opens occupation details from the stored recommendation', async () => {
   expect(await screen.findByRole('heading', { name: 'Computer Science Teachers, Postsecondary' })).toBeInTheDocument()
   expect(await screen.findByText(/Teach courses in computer science/)).toBeInTheDocument()
   expect(screen.getByText(/Why this was recommended/)).toBeInTheDocument()
-  expect(screen.getByText(/Professional Advising and related O\*NET features/)).toBeInTheDocument()
+  expect(screen.getByText(/Professional Advising and related features/)).toBeInTheDocument()
+  expect(screen.queryByText(/O\*NET/i)).not.toBeInTheDocument()
   expect(screen.getByText('Specific Interests')).toBeInTheDocument()
   expect(screen.getByText('Knowledge')).toBeInTheDocument()
   expect(screen.getByText('Skills')).toBeInTheDocument()

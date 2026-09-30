@@ -25,7 +25,7 @@ test('dashboard shows welcome text and an empty assessment state', async () => {
   expect(screen.getByText('No assessment yet')).toBeInTheDocument()
   expect(screen.getByText('You have not started an assessment')).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Start your career assessment' })).toBeInTheDocument()
-  expect(screen.getByText('No recommendation run yet')).toBeInTheDocument()
+  expect(screen.getByText('No recommendations yet')).toBeInTheDocument()
   expect(screen.getByText('There is no stored recommendation history for this account.')).toBeInTheDocument()
   expect(screen.queryByText('Software Developers')).not.toBeInTheDocument()
 })
@@ -43,7 +43,10 @@ test('links the latest stored recommendation run to the results page', async () 
 
   renderApp('/dashboard')
 
-  expect(await screen.findByText('Computer Science Teachers, Postsecondary (25-1021.00)')).toBeInTheDocument()
+  expect(await screen.findAllByText('Computer Science Teachers, Postsecondary')).not.toHaveLength(0)
+  expect(screen.queryByText(/25-1021\.00/)).not.toBeInTheDocument()
+  expect(screen.queryByText(/O\*NET/i)).not.toBeInTheDocument()
+  expect(screen.queryByText(/\bAPI\b/)).not.toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'View Recommendations' })).toHaveAttribute(
     'href',
     `/recommendations/${RUN_ID}`,

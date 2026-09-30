@@ -134,8 +134,6 @@ export function AssessmentPage() {
 
       {onReview ? (
         <ReviewScreen
-          questionnaireVersion={assessment.questionnaire.version}
-          featureVersion={assessment.questionnaire.feature_version}
           questions={questions}
           answers={assessment.answers}
           onEdit={(index) => {

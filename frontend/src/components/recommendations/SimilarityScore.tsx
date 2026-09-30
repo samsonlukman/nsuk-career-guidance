@@ -6,24 +6,21 @@ type SimilarityScoreProps = {
   rawSimilarity: number
 }
 
-export function SimilarityScore({ rank, recommendationScore, rawSimilarity }: SimilarityScoreProps) {
+export function SimilarityScore({ rank, recommendationScore }: SimilarityScoreProps) {
   const bounded = recommendationScore >= 0 && recommendationScore <= 1
-  const label = `${matchPhrase(rank)}. Profile similarity ${formatSimilarity(recommendationScore)}.`
+  const label = `${matchPhrase(rank)}. Match score ${formatSimilarity(recommendationScore)}.`
 
   return (
     <div className="similarity-score">
       <p className="similarity-phrase">{matchPhrase(rank)}</p>
       <p className="similarity-label">
-        Profile similarity <span className="similarity-value">{formatSimilarity(recommendationScore)}</span>
+        Match score <span className="similarity-value">{formatSimilarity(recommendationScore)}</span>
       </p>
-      {rawSimilarity !== recommendationScore ? (
-        <p className="similarity-raw">Raw similarity {formatSimilarity(rawSimilarity)}</p>
-      ) : null}
       {bounded ? (
         <div
           className="similarity-track"
           role="meter"
-          aria-label="Profile similarity"
+          aria-label="Match score"
           aria-valuemin={0}
           aria-valuemax={1}
           aria-valuenow={Number(recommendationScore.toFixed(3))}
@@ -32,7 +29,7 @@ export function SimilarityScore({ rank, recommendationScore, rawSimilarity }: Si
           <div className="similarity-fill" style={{ width: `${recommendationScore * 100}%` }} />
         </div>
       ) : null}
-      <p className="field-hint">This is a profile similarity score, not a prediction of success or employment.</p>
+      <p className="field-hint">This score shows how closely the career matches your answers. It is not a prediction of success or employment.</p>
     </div>
   )
 }

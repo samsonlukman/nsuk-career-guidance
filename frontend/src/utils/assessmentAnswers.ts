@@ -243,7 +243,7 @@ export function submissionErrorMessage(error: { status?: number; code?: string; 
     return 'Your session has expired. Log in again. Your answers are still saved on this device.'
   }
   if (error.code === 'network_error') {
-    return error.message ?? 'Unable to reach the server. Your answers are still saved on this device.'
+    return error.message ?? 'Unable to connect. Your answers are still saved on this device.'
   }
   if (error.code === 'missing_required_response') {
     return 'Some required answers are missing. Use the review list to complete them.'

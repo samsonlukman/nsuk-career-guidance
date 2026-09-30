@@ -59,7 +59,7 @@ export function DashboardPage() {
     <article className="dashboard">
       <PageHeader
         title={`Welcome, ${displayName(user)}`}
-        description="This page shows your assessment status and recommendation history from the server. Nothing here is invented for display."
+        description="This page shows your assessment status and the career recommendations prepared for you."
       />
 
       <section className="status-panel" aria-labelledby="assessment-status-heading">
@@ -79,8 +79,7 @@ export function DashboardPage() {
         ) : (
           <EmptyState title="You have not started an assessment">
             <p>
-              Complete the career assessment to generate a recommendation run. Until you submit,
-              nothing is stored as an assessment on the server.
+              Complete the career assessment to receive personalised career recommendations.
             </p>
           </EmptyState>
         )}
@@ -99,36 +98,27 @@ export function DashboardPage() {
           <>
           <dl className="meta-list">
             <div>
-              <dt>Generated</dt>
+              <dt>Prepared</dt>
               <dd>{formatDateTime(latestRun.created_at)}</dd>
             </div>
             <div>
-              <dt>Occupations returned</dt>
+              <dt>Careers suggested</dt>
               <dd>{latestRun.item_count}</dd>
             </div>
             {latestRun.top_occupation_title ? (
               <div>
-                <dt>Highest-ranked occupation</dt>
-                <dd>
-                  {latestRun.top_occupation_title}
-                  {latestRun.top_onetsoc_code ? ` (${latestRun.top_onetsoc_code})` : ''}
-                </dd>
+                <dt>Highest-ranked career</dt>
+                <dd>{latestRun.top_occupation_title}</dd>
               </div>
             ) : null}
-            <div>
-              <dt>Versions</dt>
-              <dd>
-                {latestRun.questionnaire_version} · {latestRun.feature_version} · {latestRun.config_version}
-              </dd>
-            </div>
           </dl>
           <ButtonLink to={`/recommendations/${latestRun.run_id}`}>View Recommendations</ButtonLink>
           </>
         ) : (
-          <EmptyState title="No recommendation run yet">
+          <EmptyState title="No recommendations yet">
             <p>
-              Recommendations appear only after a completed assessment is processed by the API.
-              Scores will reflect occupational similarity, not predicted career success.
+              Recommendations appear after you complete an assessment. They show careers that
+              match your answers, not a prediction of career success.
             </p>
           </EmptyState>
         )}
@@ -145,8 +135,7 @@ export function DashboardPage() {
               <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Items</th>
-                <th scope="col">Top occupation</th>
-                <th scope="col">Versions</th>
+                <th scope="col">Top career</th>
                 <th scope="col">Results</th>
               </tr>
             </thead>
@@ -156,9 +145,6 @@ export function DashboardPage() {
                   <td>{formatDateTime(item.created_at)}</td>
                   <td>{item.item_count}</td>
                   <td>{item.top_occupation_title ?? '—'}</td>
-                  <td>
-                    {item.questionnaire_version} / {item.feature_version}
-                  </td>
                   <td>
                     <ButtonLink to={`/recommendations/${item.run_id}`} variant="ghost">
                       View

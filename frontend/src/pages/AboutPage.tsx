@@ -5,8 +5,8 @@ export function AboutPage() {
     <article className="prose-page">
       <PageHeader
         eyebrow="About the system"
-        title="Career guidance grounded in occupational information"
-        description="The NSUK Career Guidance System helps undergraduates explore occupations using a published questionnaire, official O*NET data, and a documented hybrid method."
+        title="Career guidance for NSUK students"
+        description="The NSUK Career Guidance System helps undergraduates explore careers from a structured assessment. Results are a starting point for discussion, not a decision made for you."
       />
 
       <section>
@@ -20,15 +20,11 @@ export function AboutPage() {
       </section>
 
       <section>
-        <h2>Method, in brief</h2>
+        <h2>What you do</h2>
         <ul>
-          <li>Your answers become a student feature profile aligned to O*NET 30.3 fields.</li>
-          <li>Named rules apply eligibility and flags (for example job-zone suitability).</li>
-          <li>
-            Remaining occupations are ranked with k-nearest neighbours using weighted-block
-            cosine similarity.
-          </li>
-          <li>Each recommendation is explained in terms of contributing features, not fate.</li>
+          <li>Create an account and complete the career assessment.</li>
+          <li>Review a shortlist of careers that match the profile you described.</li>
+          <li>Read why each career was suggested, then discuss the results with a counsellor.</li>
         </ul>
       </section>
 
@@ -38,16 +34,6 @@ export function AboutPage() {
           Use the results as a starting point with a career counsellor or academic adviser. Human
           context — family circumstances, labour-market realities in Nigeria, and personal values
           that this questionnaire does not capture — still matters.
-        </p>
-      </section>
-
-      <section>
-        <h2>Data attribution</h2>
-        <p>
-          Occupational records come from the O*NET 30.3 Database by the U.S. Department of Labor,
-          Employment and Training Administration, licensed under CC BY 4.0. Faculty names follow
-          the official NSUK academic structure. Department names are entered by the student; they
-          are not invented here as a fixed list.
         </p>
       </section>
     </article>
