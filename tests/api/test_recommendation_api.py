@@ -353,3 +353,89 @@ def _student_assessment_from_payload(payload: dict) -> StudentAssessment:
             pref_public=int(by_code["pref_public"]["value"]),
         ),
     )
+
+
+def _experience_payload(**overrides: object) -> dict:
+    payload: dict = {
+        "questions_easy_to_understand": 4,
+        "assessment_easy_to_complete": 5,
+        "system_easy_to_navigate": 4,
+        "recommendations_easy_to_understand": 4,
+        "explanations_helped": 5,
+        "reflected_interests": 4,
+        "reflected_skills": 3,
+        "helped_explore_options": 5,
+        "would_use_again": 4,
+        "would_discuss_with_counsellor": 5,
+        "liked_most_and_improvement": "The explanations were clear. I would like a shorter questionnaire.",
+    }
+    payload.update(overrides)
+    return payload
+
+
+def test_experience_evaluation_create_get_and_validation(authed_client: TestClient) -> None:
+    created = authed_client.post("/api/v1/assessments", json=_payload(authed_client)).json()
+    run_id = created["id"]
+    path = f"/api/v1/recommendations/{run_id}/experience-evaluation"
+
+    missing = authed_client.get(path)
+    assert missing.status_code == 404
+    assert missing.json()["error"]["code"] == "experience_evaluation_not_found"
+
+    invalid = authed_client.post(path, json=_experience_payload(reflected_skills=9))
+    assert invalid.status_code == 422
+
+    incomplete = authed_client.post(path, json={"questions_easy_to_understand": 4})
+    assert incomplete.status_code == 422
+
+    ok = authed_client.post(path, json=_experience_payload())
+    assert ok.status_code == 200, ok.text
+    body = ok.json()
+    assert body["run_id"] == run_id
+    assert body["questions_easy_to_understand"] == 4
+    assert body["would_discuss_with_counsellor"] == 5
+    assert "shorter questionnaire" in (body["liked_most_and_improvement"] or "")
+    assert "accuracy test" in body["note"].lower()
+    assert "not an accuracy" in body["note"].lower()
+
+    duplicate = authed_client.post(path, json=_experience_payload(liked_most_and_improvement=None))
+    assert duplicate.status_code == 409
+    assert duplicate.json()["error"]["code"] == "experience_evaluation_exists"
+
+    fetched = authed_client.get(path)
+    assert fetched.status_code == 200
+    assert fetched.json()["id"] == body["id"]
+    assert fetched.json()["reflected_interests"] == 4
+
+
+def test_experience_evaluation_requires_owner_and_existing_run(
+    authed_client: TestClient,
+    db_session: Session,
+) -> None:
+    created = authed_client.post("/api/v1/assessments", json=_payload(authed_client)).json()
+    run_id = created["id"]
+    path = f"/api/v1/recommendations/{run_id}/experience-evaluation"
+
+    other = User(
+        email=f"other-{uuid.uuid4().hex}@example.com",
+        password_hash=hash_password(TEST_PASSWORD),
+        role="student",
+    )
+    db_session.add(other)
+    db_session.commit()
+    authed_client.cookies.clear()
+    stolen = authed_client.post("/api/v1/auth/login", json={"email": other.email, "password": TEST_PASSWORD})
+    assert stolen.status_code == 200
+    forbidden = authed_client.post(path, json=_experience_payload())
+    assert forbidden.status_code == 403
+
+    missing_run = authed_client.post(
+        f"/api/v1/recommendations/{uuid.uuid4()}/experience-evaluation",
+        json=_experience_payload(),
+    )
+    assert missing_run.status_code == 404
+    assert missing_run.json()["error"]["code"] == "invalid_recommendation_run"
+
+    authed_client.cookies.clear()
+    unauthenticated = authed_client.post(path, json=_experience_payload())
+    assert unauthenticated.status_code == 401

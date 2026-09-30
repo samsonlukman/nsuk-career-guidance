@@ -132,6 +132,8 @@ def test_runtime_integrity_has_no_structural_duplicates(db_session) -> None:
         "orphan_assessments",
         "orphan_runs",
         "orphan_items",
+        "orphan_experience_evaluations",
+        "duplicate_experience_evaluations",
         "runs_missing_traceability",
         "questionnaire_inconsistency",
         "invalid_faculty_prior_elements",

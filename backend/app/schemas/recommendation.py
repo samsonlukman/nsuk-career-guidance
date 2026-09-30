@@ -141,3 +141,39 @@ class RatingOut(BaseModel):
     comment: str | None = None
     created_at: datetime
     note: str = "This is user relevance feedback, not a measure of recommendation accuracy."
+
+
+class ExperienceEvaluationCreateRequest(BaseModel):
+    questions_easy_to_understand: int = Field(..., ge=1, le=5)
+    assessment_easy_to_complete: int = Field(..., ge=1, le=5)
+    system_easy_to_navigate: int = Field(..., ge=1, le=5)
+    recommendations_easy_to_understand: int = Field(..., ge=1, le=5)
+    explanations_helped: int = Field(..., ge=1, le=5)
+    reflected_interests: int = Field(..., ge=1, le=5)
+    reflected_skills: int = Field(..., ge=1, le=5)
+    helped_explore_options: int = Field(..., ge=1, le=5)
+    would_use_again: int = Field(..., ge=1, le=5)
+    would_discuss_with_counsellor: int = Field(..., ge=1, le=5)
+    liked_most_and_improvement: str | None = Field(default=None, max_length=2000)
+
+
+class ExperienceEvaluationOut(BaseModel):
+    id: uuid.UUID
+    run_id: uuid.UUID
+    student_user_id: uuid.UUID
+    questions_easy_to_understand: int
+    assessment_easy_to_complete: int
+    system_easy_to_navigate: int
+    recommendations_easy_to_understand: int
+    explanations_helped: int
+    reflected_interests: int
+    reflected_skills: int
+    helped_explore_options: int
+    would_use_again: int
+    would_discuss_with_counsellor: int
+    liked_most_and_improvement: str | None = None
+    created_at: datetime
+    note: str = (
+        "This form records your experience, usability, usefulness, and perceived relevance. "
+        "It is not an accuracy test."
+    )

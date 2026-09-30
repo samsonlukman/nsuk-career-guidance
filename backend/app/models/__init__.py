@@ -3,6 +3,7 @@ from app.models.assessment import Assessment, AssessmentResponse, Question, Ques
 from app.models.config import FacultyKnowledgePrior, FacultyKnowledgePriorAudit, RuleDefinition, SystemConfig
 from app.models.onet import EducationCategory, JobZoneDefinition, Occupation, OccupationFeature, OnetSnapshot
 from app.models.recommendation import (
+    ExperienceEvaluation,
     RecommendationConfig,
     RecommendationContribution,
     RecommendationItem,
@@ -32,6 +33,7 @@ __all__ = [
     "RecommendationContribution",
     "RuleFiring",
     "RecommendationRating",
+    "ExperienceEvaluation",
     "FacultyKnowledgePrior",
     "FacultyKnowledgePriorAudit",
     "RuleDefinition",

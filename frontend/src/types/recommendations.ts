@@ -104,3 +104,26 @@ export type RatingOut = {
   created_at: string
   note: string
 }
+
+export type ExperienceEvaluationCreateRequest = {
+  questions_easy_to_understand: number
+  assessment_easy_to_complete: number
+  system_easy_to_navigate: number
+  recommendations_easy_to_understand: number
+  explanations_helped: number
+  reflected_interests: number
+  reflected_skills: number
+  helped_explore_options: number
+  would_use_again: number
+  would_discuss_with_counsellor: number
+  liked_most_and_improvement?: string | null
+}
+
+export type ExperienceEvaluationOut = ExperienceEvaluationCreateRequest & {
+  id: string
+  run_id: string
+  student_user_id: string
+  liked_most_and_improvement: string | null
+  created_at: string
+  note: string
+}

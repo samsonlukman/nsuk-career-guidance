@@ -33,6 +33,7 @@ from app.evaluation.safeguards import (
 from app.models import (
     Assessment,
     AssessmentResponse,
+    ExperienceEvaluation,
     FacultyKnowledgePrior,
     FacultyKnowledgePriorAudit,
     Occupation,
@@ -257,11 +258,13 @@ def reset_evaluation_students(url: str) -> dict[str, int]:
     try:
         student_ids = list(session.scalars(select(User.id).where(User.role == "student")))
         counts = {
+            "experience_evaluations": session.scalar(select(func.count()).select_from(ExperienceEvaluation)) or 0,
             "ratings": session.scalar(select(func.count()).select_from(RecommendationRating)) or 0,
             "runs": session.scalar(select(func.count()).select_from(RecommendationRun)) or 0,
             "assessments": session.scalar(select(func.count()).select_from(Assessment)) or 0,
             "students": len(student_ids),
         }
+        session.execute(delete(ExperienceEvaluation))
         session.execute(delete(RecommendationRating))
         session.execute(delete(RecommendationContribution))
         session.execute(delete(RuleFiring))
@@ -381,6 +384,30 @@ def collect_integrity_findings(session: Session) -> list[IntegrityFinding]:
         )
         or 0,
         "recommendation items whose run no longer exists",
+    )
+    add(
+        "orphan_experience_evaluations",
+        session.scalar(
+            select(func.count())
+            .select_from(ExperienceEvaluation)
+            .outerjoin(RecommendationRun, ExperienceEvaluation.run_id == RecommendationRun.id)
+            .where(RecommendationRun.id.is_(None))
+        )
+        or 0,
+        "experience evaluations whose recommendation run no longer exists",
+    )
+    add(
+        "duplicate_experience_evaluations",
+        session.scalar(
+            select(func.count()).select_from(
+                select(ExperienceEvaluation.run_id, ExperienceEvaluation.student_user_id)
+                .group_by(ExperienceEvaluation.run_id, ExperienceEvaluation.student_user_id)
+                .having(func.count() > 1)
+                .subquery()
+            )
+        )
+        or 0,
+        "duplicate experience evaluations for the same student and run",
     )
     add(
         "duplicate_item_ranks",

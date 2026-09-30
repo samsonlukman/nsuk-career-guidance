@@ -116,3 +116,12 @@ test('renders recommendation cards in a list suitable for narrow screens', async
   expect(document.querySelector('.recommendation-list')).not.toBeNull()
   expect(FLAG_ITEM_ID).toBeTruthy()
 })
+
+test('offers an experience evaluation after recommendations', async () => {
+  stubRun()
+  renderApp(`/recommendations/${RUN_ID}`)
+  await screen.findByRole('heading', { name: 'Your Career Recommendations' })
+  const evaluate = screen.getByRole('link', { name: 'Evaluate Your Experience' })
+  expect(evaluate).toHaveAttribute('href', `/recommendations/${RUN_ID}/evaluate`)
+  expect(screen.queryByText(/accuracy test/i)).not.toBeInTheDocument()
+})

@@ -107,6 +107,7 @@ export function RecommendationsPage() {
         ))}
       </ol>
       <div className="hero-actions">
+        <ButtonLink to={`/recommendations/${run.id}/evaluate`}>Evaluate Your Experience</ButtonLink>
         <ButtonLink to="/dashboard" variant="secondary">
           Back to Dashboard
         </ButtonLink>

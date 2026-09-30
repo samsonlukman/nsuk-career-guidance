@@ -120,6 +120,7 @@ def test_migrations_apply_on_empty_database(engine) -> None:
         "recommendation_contributions",
         "rule_firings",
         "recommendation_ratings",
+        "experience_evaluations",
         "faculty_knowledge_priors",
         "faculty_knowledge_prior_audits",
         "rules",
@@ -181,6 +182,10 @@ def test_unique_constraints_on_ratings_and_priors(session: Session, engine) -> N
     assert "uq_recommendation_ratings_item_student" in names
     prior_uniques = {item["name"] for item in inspect(engine).get_unique_constraints("faculty_knowledge_priors")}
     assert "uq_faculty_knowledge_priors" in prior_uniques
+    experience_uniques = {
+        item["name"] for item in inspect(engine).get_unique_constraints("experience_evaluations")
+    }
+    assert "uq_experience_evaluations_run_student" in experience_uniques
 
 
 def test_faculty_priors_table_starts_empty(session: Session) -> None:

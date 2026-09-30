@@ -71,6 +71,7 @@ class RecommendationRun(Base):
 
     items: Mapped[list[RecommendationItem]] = relationship(back_populates="run")
     firings: Mapped[list[RuleFiring]] = relationship(back_populates="run")
+    experience_evaluations: Mapped[list[ExperienceEvaluation]] = relationship(back_populates="run")
 
 
 class RecommendationItem(Base):
@@ -171,3 +172,73 @@ class RecommendationRating(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
     item: Mapped[RecommendationItem] = relationship(back_populates="ratings")
+
+
+EXPERIENCE_EVALUATION_SCALE_FIELDS = (
+    "questions_easy_to_understand",
+    "assessment_easy_to_complete",
+    "system_easy_to_navigate",
+    "recommendations_easy_to_understand",
+    "explanations_helped",
+    "reflected_interests",
+    "reflected_skills",
+    "helped_explore_options",
+    "would_use_again",
+    "would_discuss_with_counsellor",
+)
+
+
+class ExperienceEvaluation(Base):
+    """Student experience, usability, usefulness, and perceived relevance.
+
+    This is not an accuracy measure.
+    """
+
+    __tablename__ = "experience_evaluations"
+    __table_args__ = (
+        UniqueConstraint("run_id", "student_user_id", name="uq_experience_evaluations_run_student"),
+        CheckConstraint(
+            "questions_easy_to_understand BETWEEN 1 AND 5",
+            name="ck_experience_eval_questions_easy",
+        ),
+        CheckConstraint(
+            "assessment_easy_to_complete BETWEEN 1 AND 5",
+            name="ck_experience_eval_assessment_easy",
+        ),
+        CheckConstraint("system_easy_to_navigate BETWEEN 1 AND 5", name="ck_experience_eval_navigate"),
+        CheckConstraint(
+            "recommendations_easy_to_understand BETWEEN 1 AND 5",
+            name="ck_experience_eval_recs_easy",
+        ),
+        CheckConstraint("explanations_helped BETWEEN 1 AND 5", name="ck_experience_eval_explanations"),
+        CheckConstraint("reflected_interests BETWEEN 1 AND 5", name="ck_experience_eval_interests"),
+        CheckConstraint("reflected_skills BETWEEN 1 AND 5", name="ck_experience_eval_skills"),
+        CheckConstraint("helped_explore_options BETWEEN 1 AND 5", name="ck_experience_eval_explore"),
+        CheckConstraint("would_use_again BETWEEN 1 AND 5", name="ck_experience_eval_use_again"),
+        CheckConstraint(
+            "would_discuss_with_counsellor BETWEEN 1 AND 5",
+            name="ck_experience_eval_counsellor",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("recommendation_runs.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    student_user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    questions_easy_to_understand: Mapped[int] = mapped_column(Integer, nullable=False)
+    assessment_easy_to_complete: Mapped[int] = mapped_column(Integer, nullable=False)
+    system_easy_to_navigate: Mapped[int] = mapped_column(Integer, nullable=False)
+    recommendations_easy_to_understand: Mapped[int] = mapped_column(Integer, nullable=False)
+    explanations_helped: Mapped[int] = mapped_column(Integer, nullable=False)
+    reflected_interests: Mapped[int] = mapped_column(Integer, nullable=False)
+    reflected_skills: Mapped[int] = mapped_column(Integer, nullable=False)
+    helped_explore_options: Mapped[int] = mapped_column(Integer, nullable=False)
+    would_use_again: Mapped[int] = mapped_column(Integer, nullable=False)
+    would_discuss_with_counsellor: Mapped[int] = mapped_column(Integer, nullable=False)
+    liked_most_and_improvement: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+    run: Mapped[RecommendationRun] = relationship(back_populates="experience_evaluations")

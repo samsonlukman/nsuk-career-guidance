@@ -19,6 +19,7 @@ import { AdminStudentsPage } from './pages/admin/AdminStudentsPage'
 import { AssessmentCompletePage } from './pages/AssessmentCompletePage'
 import { AssessmentPage } from './pages/AssessmentPage'
 import { DashboardPage } from './pages/DashboardPage'
+import { ExperienceEvaluationPage } from './pages/ExperienceEvaluationPage'
 import { RecommendationDetailPage } from './pages/RecommendationDetailPage'
 import { RecommendationsPage } from './pages/RecommendationsPage'
 import { LandingPage } from './pages/LandingPage'
@@ -62,6 +63,7 @@ export function AppRoutes() {
         <Route path="/assessment" element={<AssessmentPage />} />
         <Route path="/assessment/complete" element={<AssessmentCompletePage />} />
         <Route path="/recommendations/:runId" element={<RecommendationsPage />} />
+        <Route path="/recommendations/:runId/evaluate" element={<ExperienceEvaluationPage />} />
         <Route path="/recommendations/:runId/items/:itemId" element={<RecommendationDetailPage />} />
       </Route>
       <Route

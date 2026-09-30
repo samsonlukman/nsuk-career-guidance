@@ -763,6 +763,29 @@ a:hover {
   font-size: 0.9rem;
 }
 
+.experience-evaluation-page .scale-key {
+  margin: 0 0 var(--space-5);
+  color: var(--color-ink-muted);
+}
+
+.experience-question {
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.experience-question .likert-option {
+  min-width: 5.4rem;
+  text-align: center;
+}
+
+.likert-label {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  color: var(--color-ink-muted);
+  text-align: center;
+}
+
 .sparse-ratings h3 {
   margin-top: var(--space-5);
 }
