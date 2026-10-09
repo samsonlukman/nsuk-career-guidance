@@ -57,6 +57,10 @@ export function AdminStudentDetailPage() {
           <dd>{data.email}</dd>
         </div>
         <div>
+          <dt>School name</dt>
+          <dd>{data.profile.institution ?? '—'}</dd>
+        </div>
+        <div>
           <dt>Matriculation number</dt>
           <dd>{data.profile.matric_number ?? '—'}</dd>
         </div>

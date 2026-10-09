@@ -9,7 +9,7 @@ export function LandingPage() {
     <article className="landing">
       <section className="hero-panel">
         <p className="eyebrow">Nasarawa State University, Keffi</p>
-        <h1>AI-Powered Personalized Career Guidance for NSUK Students</h1>
+        <h1>AI-Powered Personalized Career Guidance for Nigerian University Students</h1>
         <p className="lede">
           A structured assessment that compares your interests, skills, knowledge, and work
           preferences with official occupational information. The result is a shortlist of
@@ -27,17 +27,20 @@ export function LandingPage() {
         <div>
           <h2 id="what-heading">What this system is</h2>
           <p>
-            This is a career exploration tool for undergraduate students of Nasarawa State
-            University, Keffi. After you complete an assessment, the system suggests careers
-            that match the interests, skills, and preferences you described.
+            This is a career exploration tool for undergraduate students of Nigerian universities.
+            It was developed at Nasarawa State University, Keffi. After you complete an
+            assessment, the system suggests careers that match the interests, skills, and
+            preferences you described.
           </p>
         </div>
         <div>
           <h2>Who it is for</h2>
           <p>
-            It is designed for NSUK undergraduates who want structured, evidence-based prompts
-            for career conversations. It is not an employment service, and it is not a substitute
-            for departmental advising or the university counselling unit.
+            It is open to undergraduates at Nigerian universities who want structured,
+            evidence-based prompts for career conversations. Register with your school name so
+            your responses can be kept with the right student record. It is not an employment
+            service, and it is not a substitute for departmental advising or a university
+            counselling unit.
           </p>
         </div>
       </section>
@@ -47,7 +50,8 @@ export function LandingPage() {
         <ol className="steps">
           <li>
             <strong>Create an account</strong>
-            Register with your student details so your profile and results stay with you.
+            Register with your school name and student details so your profile and results stay
+            with you.
           </li>
           <li>
             <strong>Complete the questionnaire</strong>

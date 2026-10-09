@@ -3,6 +3,7 @@ export type UserRole = 'student' | 'admin'
 export type StudentProfile = {
   first_name: string | null
   last_name: string | null
+  institution: string | null
   matric_number: string | null
   faculty: string | null
   department: string | null
@@ -24,6 +25,7 @@ export type RegisterPayload = {
   password: string
   first_name?: string
   last_name?: string
+  institution: string
   matric_number?: string
 }
 

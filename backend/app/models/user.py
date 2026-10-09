@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, String, Text, func
+from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Index, String, Text, func, text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -34,11 +34,27 @@ class User(Base):
 
 class StudentProfile(Base):
     __tablename__ = "student_profiles"
+    __table_args__ = (
+        Index(
+            "uq_student_profiles_institution_matric",
+            "institution",
+            "matric_number",
+            unique=True,
+            postgresql_where=text("institution IS NOT NULL AND matric_number IS NOT NULL"),
+        ),
+        Index(
+            "uq_student_profiles_matric_no_institution",
+            "matric_number",
+            unique=True,
+            postgresql_where=text("matric_number IS NOT NULL AND institution IS NULL"),
+        ),
+    )
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
     )
-    matric_number: Mapped[str | None] = mapped_column(String(64), unique=True, index=True, nullable=True)
+    institution: Mapped[str | None] = mapped_column(String(200), index=True, nullable=True)
+    matric_number: Mapped[str | None] = mapped_column(String(64), index=True, nullable=True)
     first_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
     last_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
     faculty: Mapped[str | None] = mapped_column(Text, nullable=True)

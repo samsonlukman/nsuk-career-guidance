@@ -105,6 +105,7 @@ test('lists stored students and opens a student record', async () => {
   expect(screen.queryByText(/password_hash/i)).not.toBeInTheDocument()
   await userEvent.click(screen.getByRole('link', { name: 'Amina Bello' }))
   expect(await screen.findByRole('heading', { name: 'Amina Bello' })).toBeInTheDocument()
+  expect(screen.getByText('Nasarawa State University, Keffi')).toBeInTheDocument()
   expect(screen.getByText('NSU/2021/001')).toBeInTheDocument()
   expect(screen.getByText('completed')).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Computer Science Teachers, Postsecondary' })).toHaveAttribute(

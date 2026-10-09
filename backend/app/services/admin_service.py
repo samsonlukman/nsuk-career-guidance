@@ -263,6 +263,7 @@ def list_admin_students(session: Session, *, query: str | None, page: int, page_
                 User.email.ilike(pattern, escape="\\"),
                 StudentProfile.first_name.ilike(pattern, escape="\\"),
                 StudentProfile.last_name.ilike(pattern, escape="\\"),
+                StudentProfile.institution.ilike(pattern, escape="\\"),
                 StudentProfile.matric_number.ilike(pattern, escape="\\"),
             )
         )
@@ -307,6 +308,7 @@ def list_admin_students(session: Session, *, query: str | None, page: int, page_
                 last_login_at=user.last_login_at,
                 first_name=profile.first_name if profile else None,
                 last_name=profile.last_name if profile else None,
+                institution=profile.institution if profile else None,
                 matric_number=profile.matric_number if profile else None,
                 faculty=profile.faculty if profile else None,
                 department=profile.department if profile else None,
@@ -353,6 +355,7 @@ def get_admin_student(session: Session, student_id: uuid.UUID, *, actor: User) -
         profile=AdminStudentProfileOut(
             first_name=profile.first_name if profile else None,
             last_name=profile.last_name if profile else None,
+            institution=profile.institution if profile else None,
             matric_number=profile.matric_number if profile else None,
             faculty=profile.faculty if profile else None,
             department=profile.department if profile else None,

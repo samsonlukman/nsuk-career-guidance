@@ -63,7 +63,7 @@ export function AdminStudentsPage() {
         description="Search and inspect stored student accounts. Passwords are never shown."
       />
       <form className="admin-filter" onSubmit={handleSearch}>
-        <FormField id="student-search" label="Search students" hint="Email, name, or matriculation number.">
+        <FormField id="student-search" label="Search students" hint="Email, name, institution, or matriculation number.">
           <input id="student-search" value={draft} onChange={(event) => setDraft(event.target.value)} />
         </FormField>
         <button type="submit" className="btn btn-primary">
@@ -82,6 +82,7 @@ export function AdminStudentsPage() {
             <thead>
               <tr>
                 <th scope="col">Student</th>
+                <th scope="col">School</th>
                 <th scope="col">Faculty</th>
                 <th scope="col">Assessment</th>
                 <th scope="col">Runs</th>
@@ -100,6 +101,7 @@ export function AdminStudentsPage() {
                     <div className="admin-subtle">{item.email}</div>
                     {item.matric_number ? <div className="admin-subtle">{item.matric_number}</div> : null}
                   </td>
+                  <td>{item.institution ?? '—'}</td>
                   <td>{item.faculty ?? '—'}</td>
                   <td>{item.latest_assessment_status ?? 'None'}</td>
                   <td>{item.recommendation_run_count}</td>

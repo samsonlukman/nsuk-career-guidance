@@ -28,6 +28,7 @@ export function ProfilePage() {
 
   const [firstName, setFirstName] = useState(user?.profile.first_name ?? '')
   const [lastName, setLastName] = useState(user?.profile.last_name ?? '')
+  const [institution, setInstitution] = useState(user?.profile.institution ?? '')
   const [matricNumber, setMatricNumber] = useState(user?.profile.matric_number ?? '')
   const [faculty, setFaculty] = useState(user?.profile.faculty ?? '')
   const [department, setDepartment] = useState(user?.profile.department ?? '')
@@ -63,6 +64,7 @@ export function ProfilePage() {
       const updated = await updateProfile({
         first_name: firstName,
         last_name: lastName,
+        institution,
         matric_number: matricNumber,
         faculty: faculty || null,
         department: department,
@@ -88,7 +90,7 @@ export function ProfilePage() {
       <PageHeader
         eyebrow="Student record"
         title="Profile"
-        description="These fields match the academic information used by the approved questionnaire. Department is free text because this project does not ship an invented NSUK department list."
+        description="School name identifies your university. Matriculation number is optional. Faculty uses official NSUK names when they apply; leave it blank if your university uses a different faculty list. Department is free text."
       />
       {error ? <Alert>{error}</Alert> : null}
       {notice ? <Alert tone="info">{notice}</Alert> : null}
@@ -99,16 +101,50 @@ export function ProfilePage() {
         <FormField id="last_name" label="Last name">
           <input id="last_name" name="last_name" value={lastName} onChange={(event) => setLastName(event.target.value)} />
         </FormField>
-        <FormField id="matric_number" label="Matriculation number">
+        <FormField
+          id="institution"
+          label="School name"
+          hint="The full name of your Nigerian university."
+        >
+          <input
+            id="institution"
+            name="institution"
+            value={institution}
+            onChange={(event) => setInstitution(event.target.value)}
+            aria-describedby={describedByFor('institution', 'The full name of your Nigerian university.')}
+          />
+        </FormField>
+        <FormField
+          id="matric_number"
+          label="Matriculation number"
+          hint="Optional. Add it if your school has given you one."
+        >
           <input
             id="matric_number"
             name="matric_number"
             value={matricNumber}
             onChange={(event) => setMatricNumber(event.target.value)}
+            aria-describedby={describedByFor(
+              'matric_number',
+              'Optional. Add it if your school has given you one.',
+            )}
           />
         </FormField>
-        <FormField id="faculty" label="Faculty">
-          <select id="faculty" name="faculty" value={faculty} onChange={(event) => setFaculty(event.target.value)}>
+        <FormField
+          id="faculty"
+          label="Faculty"
+          hint="Official NSUK faculty names. Leave blank if your university uses a different faculty structure."
+        >
+          <select
+            id="faculty"
+            name="faculty"
+            value={faculty}
+            onChange={(event) => setFaculty(event.target.value)}
+            aria-describedby={describedByFor(
+              'faculty',
+              'Official NSUK faculty names. Leave blank if your university uses a different faculty structure.',
+            )}
+          >
             <option value="">Select a faculty</option>
             {options.faculties.map((name) => (
               <option key={name} value={name}>

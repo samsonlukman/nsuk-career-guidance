@@ -10,24 +10,33 @@ from app.services.questionnaire_seed import NSUK_FACULTIES
 from tests.api.conftest import TEST_PASSWORD
 
 
+def _register_payload(**overrides: object) -> dict[str, object]:
+    payload: dict[str, object] = {
+        "email": f"reg-{uuid.uuid4().hex}@example.com",
+        "password": TEST_PASSWORD,
+        "institution": "Nasarawa State University, Keffi",
+    }
+    payload.update(overrides)
+    return payload
+
+
 def test_register_login_me_and_logout(client: TestClient) -> None:
     client.cookies.clear()
     email = f"reg-{uuid.uuid4().hex}@example.com"
     created = client.post(
         "/api/v1/auth/register",
-        json={
-            "email": email,
-            "password": TEST_PASSWORD,
-            "first_name": "Amina",
-            "last_name": "Bello",
-            "matric_number": f"NSU/{uuid.uuid4().hex[:6].upper()}",
-        },
+        json=_register_payload(
+            email=email,
+            first_name="Amina",
+            last_name="Bello",
+        ),
     )
     assert created.status_code == 200, created.text
     body = created.json()
     assert body["email"] == email
     assert body["role"] == "student"
     assert body["profile"]["first_name"] == "Amina"
+    assert body["profile"]["institution"] == "Nasarawa State University, Keffi"
     assert "password" not in body
     assert "nsuk_session" in created.cookies
 
@@ -48,12 +57,74 @@ def test_register_login_me_and_logout(client: TestClient) -> None:
 def test_register_duplicate_email(client: TestClient) -> None:
     client.cookies.clear()
     email = f"dup-{uuid.uuid4().hex}@example.com"
-    first = client.post("/api/v1/auth/register", json={"email": email, "password": TEST_PASSWORD})
+    first = client.post("/api/v1/auth/register", json=_register_payload(email=email))
     assert first.status_code == 200
     client.cookies.clear()
-    second = client.post("/api/v1/auth/register", json={"email": email, "password": TEST_PASSWORD})
+    second = client.post("/api/v1/auth/register", json=_register_payload(email=email))
     assert second.status_code == 409
     assert second.json()["error"]["code"] == "email_taken"
+
+
+def test_register_requires_school_name_but_not_matric(client: TestClient) -> None:
+    client.cookies.clear()
+    missing_school = client.post(
+        "/api/v1/auth/register",
+        json={"email": f"noid-{uuid.uuid4().hex}@example.com", "password": TEST_PASSWORD},
+    )
+    assert missing_school.status_code == 422
+    created = client.post(
+        "/api/v1/auth/register",
+        json=_register_payload(email=f"school-only-{uuid.uuid4().hex}@example.com"),
+    )
+    assert created.status_code == 200, created.text
+    assert created.json()["profile"]["institution"] == "Nasarawa State University, Keffi"
+    assert created.json()["profile"]["matric_number"] is None
+    client.cookies.clear()
+
+
+def test_same_matric_allowed_at_different_institutions(client: TestClient) -> None:
+    client.cookies.clear()
+    matric = f"UG/{uuid.uuid4().hex[:6].upper()}"
+    first = client.post(
+        "/api/v1/auth/register",
+        json=_register_payload(
+            email=f"nsuk-{uuid.uuid4().hex}@example.com",
+            institution="Nasarawa State University, Keffi",
+            matric_number=matric,
+        ),
+    )
+    assert first.status_code == 200, first.text
+    client.cookies.clear()
+    second = client.post(
+        "/api/v1/auth/register",
+        json=_register_payload(
+            email=f"unilag-{uuid.uuid4().hex}@example.com",
+            institution="University of Lagos",
+            matric_number=matric,
+        ),
+    )
+    assert second.status_code == 200, second.text
+    assert second.json()["profile"]["institution"] == "University of Lagos"
+    client.cookies.clear()
+
+
+def test_same_matric_at_same_institution_is_rejected(client: TestClient) -> None:
+    client.cookies.clear()
+    matric = f"NSU/{uuid.uuid4().hex[:6].upper()}"
+    institution = "Nasarawa State University, Keffi"
+    first = client.post(
+        "/api/v1/auth/register",
+        json=_register_payload(institution=institution, matric_number=matric),
+    )
+    assert first.status_code == 200, first.text
+    client.cookies.clear()
+    second = client.post(
+        "/api/v1/auth/register",
+        json=_register_payload(institution=institution, matric_number=matric),
+    )
+    assert second.status_code == 409
+    assert second.json()["error"]["code"] == "matric_taken"
+    client.cookies.clear()
 
 
 def test_login_rejects_wrong_password(client: TestClient, student: User) -> None:
@@ -76,6 +147,7 @@ def test_profile_update_and_dashboard_empty_state(authed_client: TestClient) -> 
         json={
             "first_name": "Chinedu",
             "last_name": "Okeke",
+            "institution": "University of Ibadan",
             "faculty": NSUK_FACULTIES[8],
             "department": "Computer Science",
             "level": "400",
@@ -85,6 +157,7 @@ def test_profile_update_and_dashboard_empty_state(authed_client: TestClient) -> 
     )
     assert updated.status_code == 200, updated.text
     profile = updated.json()["profile"]
+    assert profile["institution"] == "University of Ibadan"
     assert profile["faculty"] == "Natural and Applied Sciences"
     assert profile["department"] == "Computer Science"
     assert profile["level"] == "400"
@@ -119,7 +192,7 @@ def test_register_ignores_client_supplied_role(client: TestClient) -> None:
     email = f"role-{uuid.uuid4().hex}@example.com"
     response = client.post(
         "/api/v1/auth/register",
-        json={"email": email, "password": TEST_PASSWORD, "role": "admin"},
+        json=_register_payload(email=email, role="admin"),
     )
     assert response.status_code == 200, response.text
     assert response.json()["role"] == "student"

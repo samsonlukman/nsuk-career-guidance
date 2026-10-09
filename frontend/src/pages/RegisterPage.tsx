@@ -15,6 +15,7 @@ export function RegisterPage() {
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [institution, setInstitution] = useState('')
   const [matricNumber, setMatricNumber] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -22,6 +23,10 @@ export function RegisterPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError(null)
+    if (!institution.trim()) {
+      setError('School name is required so we can record which university you attend.')
+      return
+    }
     if (password.length < 8) {
       setError('Password must be at least 8 characters.')
       return
@@ -33,7 +38,8 @@ export function RegisterPage() {
         password,
         first_name: firstName || undefined,
         last_name: lastName || undefined,
-        matric_number: matricNumber || undefined,
+        institution: institution.trim(),
+        matric_number: matricNumber.trim() || undefined,
       })
       navigate('/dashboard', { replace: true })
     } catch (err) {
@@ -48,7 +54,7 @@ export function RegisterPage() {
       <PageHeader
         eyebrow="New student account"
         title="Register"
-        description="Registration creates a student account only. You can add faculty, department, and level on your profile after you sign in."
+        description="Undergraduate students of Nigerian universities can create an account. Add faculty, department, and level on your profile after you sign in."
       />
       {error ? <Alert>{error}</Alert> : null}
       <form className="form" onSubmit={(event) => void handleSubmit(event)} noValidate>
@@ -73,9 +79,25 @@ export function RegisterPage() {
           />
         </FormField>
         <FormField
+          id="institution"
+          label="School name"
+          hint="The full name of your Nigerian university."
+        >
+          <input
+            id="institution"
+            name="institution"
+            type="text"
+            autoComplete="organization"
+            required
+            value={institution}
+            onChange={(event) => setInstitution(event.target.value)}
+            aria-describedby={describedByFor('institution', 'The full name of your Nigerian university.')}
+          />
+        </FormField>
+        <FormField
           id="matric_number"
           label="Matriculation number"
-          hint="Optional. Use the number issued by NSUK if you have it."
+          hint="Optional. Add it if your school has given you one."
         >
           <input
             id="matric_number"
@@ -84,7 +106,10 @@ export function RegisterPage() {
             autoComplete="off"
             value={matricNumber}
             onChange={(event) => setMatricNumber(event.target.value)}
-            aria-describedby={describedByFor('matric_number', 'Optional. Use the number issued by NSUK if you have it.')}
+            aria-describedby={describedByFor(
+              'matric_number',
+              'Optional. Add it if your school has given you one.',
+            )}
           />
         </FormField>
         <FormField id="email" label="Email address">

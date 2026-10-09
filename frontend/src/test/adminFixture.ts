@@ -72,6 +72,7 @@ export const mockStudentList: AdminStudentList = {
       last_login_at: '2026-08-24T00:10:00Z',
       first_name: 'Amina',
       last_name: 'Bello',
+      institution: 'Nasarawa State University, Keffi',
       matric_number: 'NSU/2021/001',
       faculty: 'Natural and Applied Sciences',
       department: 'Computer Science',
@@ -92,6 +93,7 @@ export const mockStudentDetail: AdminStudentDetail = {
   profile: {
     first_name: 'Amina',
     last_name: 'Bello',
+    institution: 'Nasarawa State University, Keffi',
     matric_number: 'NSU/2021/001',
     faculty: 'Natural and Applied Sciences',
     department: 'Computer Science',

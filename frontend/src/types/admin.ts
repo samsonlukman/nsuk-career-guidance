@@ -60,6 +60,7 @@ export type AdminStudentListItem = {
   last_login_at: string | null
   first_name: string | null
   last_name: string | null
+  institution: string | null
   matric_number: string | null
   faculty: string | null
   department: string | null
@@ -76,6 +77,7 @@ export type AdminStudentList = PageMeta & {
 export type AdminStudentProfile = {
   first_name: string | null
   last_name: string | null
+  institution: string | null
   matric_number: string | null
   faculty: string | null
   department: string | null

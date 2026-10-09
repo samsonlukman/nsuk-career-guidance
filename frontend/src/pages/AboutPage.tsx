@@ -5,8 +5,8 @@ export function AboutPage() {
     <article className="prose-page">
       <PageHeader
         eyebrow="About the system"
-        title="Career guidance for NSUK students"
-        description="The NSUK Career Guidance System helps undergraduates explore careers from a structured assessment. Results are a starting point for discussion, not a decision made for you."
+        title="Career guidance for Nigerian university students"
+        description="This system, developed at Nasarawa State University, Keffi, helps undergraduates explore careers from a structured assessment. Results are a starting point for discussion, not a decision made for you."
       />
 
       <section>

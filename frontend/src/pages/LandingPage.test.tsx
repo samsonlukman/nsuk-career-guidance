@@ -16,11 +16,11 @@ test('landing page explains the system and uses the primary CTA', async () => {
 
   expect(
     await screen.findByRole('heading', {
-      name: /AI-Powered Personalized Career Guidance for NSUK Students/i,
+      name: /AI-Powered Personalized Career Guidance for Nigerian University Students/i,
     }),
   ).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Start Your Career Assessment' })).toHaveAttribute('href', '/register')
-  expect(screen.getByText(/undergraduate students of Nasarawa State University, Keffi/i)).toBeInTheDocument()
+  expect(screen.getByText(/undergraduate students of Nigerian universities/i)).toBeInTheDocument()
   expect(screen.getByText(/does not replace counsellors/i)).toBeInTheDocument()
   expect(document.body.textContent ?? '').not.toMatch(/O\*NET/i)
   expect(document.body.textContent ?? '').not.toMatch(/k-nearest/i)

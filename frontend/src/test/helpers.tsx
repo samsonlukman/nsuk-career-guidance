@@ -15,6 +15,7 @@ export const adminUser: CurrentUser = {
   profile: {
     first_name: 'Ada',
     last_name: 'Okeke',
+    institution: null,
     matric_number: null,
     faculty: null,
     department: null,
@@ -32,6 +33,7 @@ export const studentUser: CurrentUser = {
   profile: {
     first_name: 'Amina',
     last_name: 'Bello',
+    institution: 'Nasarawa State University, Keffi',
     matric_number: 'NSU/2021/001',
     faculty: null,
     department: null,

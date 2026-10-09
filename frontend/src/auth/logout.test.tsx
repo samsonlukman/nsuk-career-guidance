@@ -34,7 +34,7 @@ test('logout clears the session and returns to the public site', async () => {
 
   expect(
     await screen.findByRole('heading', {
-      name: /AI-Powered Personalized Career Guidance for NSUK Students/i,
+      name: /AI-Powered Personalized Career Guidance for Nigerian University Students/i,
     }),
   ).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Log in' })).toBeInTheDocument()

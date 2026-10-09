@@ -89,6 +89,7 @@ ITEM_EXPORT_FIELDS = (
     "feature_version",
     "config_version",
     "elapsed_ms",
+    "institution",
     "faculty",
     "department",
     "level",
@@ -625,6 +626,7 @@ def export_evaluation_results(url: str, output_dir: Path) -> Path:
                     "feature_version": run.feature_version,
                     "config_version": config.version if config else None,
                     "elapsed_ms": run.elapsed_ms,
+                    "institution": profile.institution if profile else None,
                     "faculty": profile.faculty if profile else None,
                     "department": profile.department if profile else None,
                     "level": profile.level if profile else None,
@@ -658,7 +660,7 @@ def export_evaluation_results(url: str, output_dir: Path) -> Path:
             "active_onet_release": ONET_RELEASE,
             "notes": [
                 "This export is for later analysis. It is not an accuracy result.",
-                "faculty/department/level are optional academic context collected for the assessment, not personal names.",
+                "institution/faculty/department/level are optional academic context collected for the assessment, not personal names.",
             ],
         }
         (target / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -762,7 +764,14 @@ def run_determinism_check(url: str) -> dict[str, Any]:
         email = f"determinism-{int(time.time())}@example.com"
         register = client.post(
             "/api/v1/auth/register",
-            json={"email": email, "password": TEST_PASSWORD, "first_name": "Eval", "last_name": "Check"},
+            json={
+                "email": email,
+                "password": TEST_PASSWORD,
+                "first_name": "Eval",
+                "last_name": "Check",
+                "institution": "Nasarawa State University, Keffi",
+                "matric_number": f"EVAL/{int(time.time())}",
+            },
         )
         if register.status_code != 200:
             raise RuntimeError(f"Could not register determinism user: {register.text}")
@@ -810,7 +819,12 @@ def run_performance_baseline(url: str, *, repeats: int = 3) -> dict[str, Any]:
         email = f"baseline-{int(time.time())}@example.com"
         created = client.post(
             "/api/v1/auth/register",
-            json={"email": email, "password": TEST_PASSWORD},
+            json={
+                "email": email,
+                "password": TEST_PASSWORD,
+                "institution": "Nasarawa State University, Keffi",
+                "matric_number": f"BASE/{int(time.time())}",
+            },
         )
         if created.status_code != 200:
             raise RuntimeError(f"Could not register baseline user: {created.text}")

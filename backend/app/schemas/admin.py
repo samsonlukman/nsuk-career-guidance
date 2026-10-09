@@ -70,6 +70,7 @@ class AdminStudentListItem(BaseModel):
     last_login_at: datetime | None = None
     first_name: str | None = None
     last_name: str | None = None
+    institution: str | None = None
     matric_number: str | None = None
     faculty: str | None = None
     department: str | None = None
@@ -86,6 +87,7 @@ class AdminStudentListOut(PageMeta):
 class AdminStudentProfileOut(BaseModel):
     first_name: str | None = None
     last_name: str | None = None
+    institution: str | None = None
     matric_number: str | None = None
     faculty: str | None = None
     department: str | None = None

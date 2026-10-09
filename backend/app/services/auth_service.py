@@ -21,6 +21,30 @@ def _clean(value: str | None) -> str | None:
     return text or None
 
 
+def _normalize_institution(value: str | None) -> str | None:
+    text = _clean(value)
+    if text is None:
+        return None
+    return " ".join(text.split())
+
+
+def _matric_is_taken(
+    session: Session,
+    *,
+    matric: str,
+    institution: str | None,
+    exclude_user_id: object | None = None,
+) -> bool:
+    stmt = select(StudentProfile.user_id).where(StudentProfile.matric_number == matric)
+    if institution:
+        stmt = stmt.where(func.lower(StudentProfile.institution) == institution.lower())
+    else:
+        stmt = stmt.where(StudentProfile.institution.is_(None))
+    if exclude_user_id is not None:
+        stmt = stmt.where(StudentProfile.user_id != exclude_user_id)
+    return session.scalar(stmt) is not None
+
+
 def _normalize_email(email: str) -> str:
     return email.strip().lower()
 
@@ -35,6 +59,7 @@ def user_to_out(user: User) -> CurrentUserOut:
         profile=ProfileOut(
             first_name=profile.first_name if profile else None,
             last_name=profile.last_name if profile else None,
+            institution=profile.institution if profile else None,
             matric_number=profile.matric_number if profile else None,
             faculty=profile.faculty if profile else None,
             department=profile.department if profile else None,
@@ -50,11 +75,15 @@ def register_student(session: Session, payload: RegisterRequest) -> tuple[User, 
     existing = session.scalar(select(User).where(func.lower(User.email) == email))
     if existing is not None:
         raise ConflictError("An account with this email already exists", code="email_taken")
+    institution = _normalize_institution(payload.institution)
     matric = _clean(payload.matric_number)
-    if matric:
-        taken = session.scalar(select(StudentProfile).where(StudentProfile.matric_number == matric))
-        if taken is not None:
-            raise ConflictError("This matriculation number is already registered", code="matric_taken")
+    if not institution:
+        raise UnprocessableError("School name is required", code="missing_student_identity")
+    if matric and _matric_is_taken(session, matric=matric, institution=institution):
+        raise ConflictError(
+            "This matriculation number is already registered at that school",
+            code="matric_taken",
+        )
     user = User(
         email=email,
         password_hash=hash_password(payload.password),
@@ -68,6 +97,7 @@ def register_student(session: Session, payload: RegisterRequest) -> tuple[User, 
             user_id=user.id,
             first_name=_clean(payload.first_name),
             last_name=_clean(payload.last_name),
+            institution=institution,
             matric_number=matric,
         )
     )
@@ -120,18 +150,23 @@ def update_student_profile(session: Session, user: User, fields: dict[str, str |
             if related not in {"related", "open"}:
                 raise UnprocessableError("course_relatedness must be related or open", code="invalid_response")
         profile.course_relatedness = related
+    if "institution" in fields:
+        profile.institution = _normalize_institution(fields.get("institution"))
     if "matric_number" in fields:
-        matric = _clean(fields.get("matric_number"))
-        if matric:
-            taken = session.scalar(
-                select(StudentProfile).where(
-                    StudentProfile.matric_number == matric,
-                    StudentProfile.user_id != user.id,
-                )
+        profile.matric_number = _clean(fields.get("matric_number"))
+    if "institution" in fields or "matric_number" in fields:
+        matric = profile.matric_number
+        institution = profile.institution
+        if matric and _matric_is_taken(
+            session,
+            matric=matric,
+            institution=institution,
+            exclude_user_id=user.id,
+        ):
+            raise ConflictError(
+                "This matriculation number is already registered at that school",
+                code="matric_taken",
             )
-            if taken is not None:
-                raise ConflictError("This matriculation number is already registered", code="matric_taken")
-        profile.matric_number = matric
     if "first_name" in fields:
         profile.first_name = _clean(fields.get("first_name"))
     if "last_name" in fields:

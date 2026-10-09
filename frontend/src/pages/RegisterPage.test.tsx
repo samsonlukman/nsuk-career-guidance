@@ -24,18 +24,22 @@ afterEach(() => {
 })
 
 test('registration form has labelled fields and creates an account', async () => {
-  const user = userEvent.setup()
+  const user = userEvent.setup({ delay: null })
   renderApp('/register')
 
   expect(await screen.findByRole('heading', { name: 'Register' })).toBeInTheDocument()
   expect(screen.getByLabelText('First name')).toBeInTheDocument()
   expect(screen.getByLabelText('Last name')).toBeInTheDocument()
+  expect(screen.getByLabelText('School name')).toBeInTheDocument()
   expect(screen.getByLabelText('Matriculation number')).toBeInTheDocument()
+  expect(screen.getByText(/optional\. add it if your school has given you one/i)).toBeInTheDocument()
   expect(screen.getByLabelText('Email address')).toBeInTheDocument()
   expect(screen.getByLabelText('Password')).toBeInTheDocument()
+  expect(document.body.textContent ?? '').not.toMatch(/issued by NSUK/i)
 
   await user.type(screen.getByLabelText('First name'), 'Amina')
   await user.type(screen.getByLabelText('Last name'), 'Bello')
+  await user.type(screen.getByLabelText('School name'), 'University of Lagos')
   await user.type(screen.getByLabelText('Email address'), 'amina@example.nsuk.test')
   await user.type(screen.getByLabelText('Password'), 'CorrectHorse9')
   await user.click(screen.getByRole('button', { name: 'Create account' }))
@@ -46,6 +50,7 @@ test('registration form has labelled fields and creates an account', async () =>
     expect.objectContaining({
       method: 'POST',
       credentials: 'include',
+      body: expect.stringContaining('"institution":"University of Lagos"'),
     }),
   )
 })
